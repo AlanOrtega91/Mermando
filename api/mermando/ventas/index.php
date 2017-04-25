@@ -1,6 +1,6 @@
 <?php
 require_once dirname(__FILE__)."/../../../modelo/SafeString.php";
-require_once dirname(__FILE__)."/../../../modelo/Producto.php";
+require_once dirname(__FILE__)."/../../../modelo/Productos.php";
 
 header('Content-Type: text/html; charset=utf8');
 
@@ -29,8 +29,8 @@ if (!isset($_POST['token']) || !isset($_POST['nombre']) || !isset($_POST['primer
 			$asociado = SafeString::safe($_POST['asociado']);
 		}
 		
-		$producto = new Producto();
-		$producto->comprarMedica365($token, $nombre, $primerApellido, $segundoApellido, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado);
+		$productos = new Productos();
+		$productos->comprarMedica365($token, $nombre, $primerApellido, $segundoApellido, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado);
 		
 		echo json_encode(array("Status"=>"OK"));
 		

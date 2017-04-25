@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__)."/../base-de-datos/DataBase.php";
+require_once dirname(__FILE__)."/../base-de-datos/BaseDeDatos.php";
 
 class SafeString
 {
@@ -15,7 +15,7 @@ class SafeString
   
   public static function getDataBaseLink()
   {
-		$mysqli = new mysqli(DataBase::DB_LINK,DataBase::DB_LOGIN,DataBase::DB_PASSWORD,DataBase::DB_NAME);
+		$mysqli = new mysqli(BaseDeDatos::DB_LINK,BaseDeDatos::DB_LOGIN,BaseDeDatos::DB_PASSWORD,BaseDeDatos::DB_NAME);
 		if ($mysqli->connect_errno) {
 			throw new errorWithDatabaseException("Error connecting with database");
 		}
