@@ -3,8 +3,10 @@ require_once dirname ( __FILE__ ) . "/../recursos/conekta-php/lib/Conekta.php";
 
 class Pago {
 	
+	const KEY = "key_dn1ykZGtpAqDYnaJnAyNUA";
+	
 	public static function crearUsuario($token, $nombre, $celular, $email) {
-		\Conekta\Conekta::setApiKey("key_6e2z4xgxxasifz655rzFPA");
+		\Conekta\Conekta::setApiKey(self::KEY);
 		\Conekta\Conekta::setApiVersion("2.0.0");		
 		$customer = \Conekta\Customer::create(
 				array(
@@ -26,7 +28,7 @@ class Pago {
 	}
 
 	public static function realizarPago($idUsuarioConekta, $precio, $nombreProducto, $descripcionProducto) {
-		\Conekta\Conekta::setApiKey("key_6e2z4xgxxasifz655rzFPA");
+		\Conekta\Conekta::setApiKey(self::KEY);
 		\Conekta\Conekta::setApiVersion("2.0.0");
 		$precioConekta =  $precio*100;
 		$charge = \Conekta\Order::create(array(

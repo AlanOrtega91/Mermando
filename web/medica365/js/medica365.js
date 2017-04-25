@@ -1,6 +1,6 @@
 (function ($){
   jQuery("document").ready(function(){
-	  Conekta.setPublishableKey('key_MY3JCSc73ZxNonTsreczf2g');
+	  Conekta.setPublishableKey('key_MUou9QgjrL1DrcsYkQeBznA');
 	  $('#comprar').submit(function tokenizar(event){
 		  var numero = $('#numero-tarjeta').val();
 		  var nombre = $('#nombre-tarjeta').val();
