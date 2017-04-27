@@ -18,6 +18,7 @@ class Producto {
 		$vigencia = date ( "Y-m-d", strtotime('+1 year') );
 		$destino = $email;
 		$asunto = "Bienvenido a Medica365";
+		$emailAdmin = "vagmx2017@gmail.com";
 		
 		$idTransaccion = $this->realizarPago($token, $nombre, $primerApellido, $segundoApellido, $celular, $email);
 
@@ -33,6 +34,8 @@ class Producto {
 						¡GRACIAS!";
 		//TODO: Esto en un thread diferente
 		$this->enviarEmail($asunto, $mensaje, $destino, $pdf);
+		$mensajeAdmin = "Se ha realizado la siguiente transaccion";
+		$this->enviarEmail("Venta Realizada", $mensajeAdmin, $emailAdmin, $pdf);
 		
 	}
 	
@@ -58,26 +61,27 @@ class Producto {
 	
 	function construirPDFMedica($certificado, $nombre, $vigencia) {
 		//TODO: cambiar a imagen y cambiar ciertas cosas solamente
+		$border = 0;
 		$tableWidth1 = 40;
 		$tableWidth2 = 45;
 		$tableHeight = 8;
 		$pdf = new PDF('P','mm');
 		$pdf->AddPage();
 		$pdf->Image(dirname ( __FILE__ ) . "/../recursos/imagenes/logo_mail.png",50,10,110,0,'PNG');
-		$pdf->Cell(100,50,'',0,2);
+		$pdf->Cell(100,50,'',$border,2);
 		$pdf->SetFont('Arial','B',12);
-		$pdf->Cell(100,8,'',1,0);
-		$pdf->Cell($tableWidth1,$tableHeight,'POLIZA',1,0,'C');
- 		$pdf->Cell($tableWidth2,$tableHeight,self::POLIZA,1,1,'C');
- 		$pdf->Cell(100,8,'',1,0);
- 		$pdf->Cell($tableWidth1,$tableHeight,'CERTIFICADO',1,0,'C');
- 		$pdf->Cell($tableWidth2,$tableHeight,$certificado,1,1,'C');
- 		$pdf->Cell(100,8,'',1,0);
- 		$pdf->Cell($tableWidth1,$tableHeight,'VIGENCIA',1,0,'C');
- 		$pdf->Cell($tableWidth2,$tableHeight,$vigencia,1,1,'C');
+		$pdf->Cell(100,8,'',$border,0);
+		$pdf->Cell($tableWidth1,$tableHeight,'POLIZA',$border,0,'C');
+		$pdf->Cell($tableWidth2,$tableHeight,self::POLIZA,$border,1,'C');
+		$pdf->Cell(100,8,'',$border,0);
+		$pdf->Cell($tableWidth1,$tableHeight,'CERTIFICADO',$border,0,'C');
+		$pdf->Cell($tableWidth2,$tableHeight,$certificado,$border,1,'C');
+		$pdf->Cell(100,8,'',$border,0);
+		$pdf->Cell($tableWidth1,$tableHeight,'VIGENCIA',$border,0,'C');
+		$pdf->Cell($tableWidth2,$tableHeight,$vigencia,$border,1,'C');
 		
 		$pdf->SetFont('Arial','BU',16);
-		$pdf->Cell(0,8,'¡'.$nombre.'!',1,1,'C');
+		$pdf->Cell(0,8,'¡'.$nombre.'!',$border,1,'C');
 		$pdf->SetFont('Arial','',12);
 		$pdf->MultiCell(0,8,'Felicitaciones, te has afiliado con éxito al grupo de beneficios “MEMBRESIA MEDICA365”, por lo que ahora cuentas con un SEGURO DE ACCIDENTES PERSONALES, el cual te brinda protección y tranquilidad cuando más la necesites. Así mismo, tienes acceso a descuentos con diversos prestadores de servicios y establecimientos, los cuales podrás consultar en nuestra página web diariamente. Tus nuevos beneficios son:',1,'J');
 		
@@ -102,16 +106,16 @@ class Producto {
 		$pdf->WriteHTML('*Consulta términos y condiciones en: <a href="www.tarjetamedica365.com">www.tarjetamedica365.com</a>');
 		$pdf->Ln();
 		$pdf->Image(dirname ( __FILE__ ) . "/../recursos/imagenes/tarjeta_corte.png",50,$pdf->getPageHeight() - 60 ,110,0,'PNG');
-		$pdf->Cell(0,30,'',1,1);
+		$pdf->Cell(0,30,'',$border,1);
 		$pdf->SetFont('Arial','B',8);
-		$pdf->Cell(40.5,3,"",1,0);
-		$pdf->Cell(35,3.2,$nombre,1,1,'C');
-		$pdf->Cell(40.5,3.2,"",1,0);
-		$pdf->Cell(35,3.2,self::POLIZA,1,1,'C');
-		$pdf->Cell(44,3.2,"",1,0);
-		$pdf->Cell(35,3.2,$certificado,1,1,'C');
-		$pdf->Cell(37,3.2,"",1,0);
-		$pdf->Cell(34,3.2,$vigencia,1,1,'C');
+		$pdf->Cell(40.5,3,"",$border,0);
+		$pdf->Cell(35,3.2,$nombre,$border,1,'C');
+		$pdf->Cell(40.5,3.2,"",$border,0);
+		$pdf->Cell(35,3.2,self::POLIZA,$border,1,'C');
+		$pdf->Cell(44,3.2,"",$border,0);
+		$pdf->Cell(35,3.2,$certificado,$border,1,'C');
+		$pdf->Cell(37,3.2,"",$border,0);
+		$pdf->Cell(34,3.2,$vigencia,$border,1,'C');
 		$pdf->Output("F",dirname ( __FILE__ ) . "/../recursos/medica365-afiliados/".self::POLIZA."-".$certificado.".pdf",true);
 		return dirname ( __FILE__ ) . "/../recursos/medica365-afiliados/".self::POLIZA."-".$certificado.".pdf";
 	}
@@ -147,7 +151,7 @@ class Producto {
 		$mail->Subject = $asunto;
 		$mail->Body    = $mensaje;
 		
-		$mail->setFrom('no-reply@topbid.mx', 'Medica365');
+		$mail->setFrom('ventas@topbid.mx', 'Medica365');
 		$mail->addAddress($destino);						// Name is optional
 	
 		$mail->addAttachment($attach, 'Certificado Medica365', $encoding = 'base64', $type = 'application/pdf');	  // Add attachments

@@ -26,7 +26,7 @@
 		  $('#comprar').show();
 		  $('#exito-compra').hide();
 		  $('#fracaso-compra').hide();
-		  $('boton-comprar')..prop('value', 'Realizando Transacción...');
+		  $('boton-comprar').prop('value', 'Realizando Transacción...');
 		  
 		  var nombre = $('#nombre').val();
 		  var primerApellido = $('#primer-apellido').val();
@@ -51,7 +51,7 @@
 		        	$('#comprar').show();
 		        	$('#exito-compra').hide();
 		        	$('#fracaso-compra').show("slow");
-		        	$('boton-comprar')..prop('value', 'Comprar');
+		        	$('boton-comprar').prop('value', 'Comprar');
 		        }
 		      }, "json");
 	  };
@@ -61,7 +61,7 @@
 		  $('#comprar').show();
 		  $('#exito-compra').hide();
 		  $('#fracaso-compra').show("slow");
-		  $('boton-comprar')..prop('value', 'Comprar');
+		  $('boton-comprar').prop('value', 'Comprar');
 	  };
 	  
 	  function enviarCompra(){
