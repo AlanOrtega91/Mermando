@@ -17,7 +17,7 @@ class SafeString
   {
 		$mysqli = new mysqli(BaseDeDatos::DB_LINK,BaseDeDatos::DB_LOGIN,BaseDeDatos::DB_PASSWORD,BaseDeDatos::DB_NAME);
 		if ($mysqli->connect_errno) {
-			throw new errorWithDatabaseException("Error connecting with database");
+			throw new errorConBaseDeDatos("Error connecting with database");
 		}
 		$mysqli->set_charset("utf8");
 		return $mysqli;

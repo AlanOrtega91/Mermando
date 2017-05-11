@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--  This site was created in Webflow. http://www.webflow.com -->
-<!--  Last Published: Thu Apr 27 2017 23:15:23 GMT+0000 (UTC)  -->
+<!--  Last Published: Sat May 06 2017 15:08:01 GMT+0000 (UTC)  -->
 <html data-wf-page="58ab5a2d24cb6c757b30ff06" data-wf-site="58911ac7b961c9956c76788c">
 <head>
   <meta charset="utf-8">
@@ -42,12 +42,8 @@
     <div class="compra-container w-container">
       <div class="w-form">
         <form action="javascript:void(0);" data-name="Datos Personales" id="comprar" method="post" name="wf-form-Datos-Personales">
-          <label for="nombre">Nombre (s)</label>
+          <label for="nombre">Nombre</label>
           <input class="w-input" data-name="nombre" id="nombre" maxlength="256" name="nombre" required="required" type="text">
-          <label for="primer-apellido">Primer Apellido</label>
-          <input class="w-input" data-name="primer apellido" id="primer-apellido" maxlength="256" name="primer-apellido" required="required" type="text">
-          <label for="segundo-apellido">Segundo Apellido</label>
-          <input class="w-input" data-name="segundo apellido" id="segundo-apellido" maxlength="256" name="segundo-apellido" type="text">
           <label for="ocupacion">Ocupación</label>
           <input class="w-input" data-name="ocupacion" id="ocupacion" maxlength="256" name="ocupacion" required="required" type="text">
           <label for="telefono-fijo">Teléfono fijo</label>
@@ -55,7 +51,7 @@
           <label for="celular">Celular</label>
           <input class="w-input" data-name="celular" id="celular" maxlength="10" name="celular" pattern=".{10,10}" placeholder="10 dígitos" required="required" type="text">
           <label for="email">Email</label>
-          <input class="w-input" data-name="email" id="email" maxlength="256" name="email" placeholder="ejemplo@medica365.mx" required="required" type="email">
+          <input class="w-input" data-name="email" id="email" maxlength="256" name="email" placeholder="ejemplo@vag.mx" required="required" type="email">
           <label for="rfc">RFC</label>
           <input class="w-input" data-name="rfc" id="rfc" maxlength="256" name="rfc" required="required" type="text">
           <label for="beneficiario">Beneficiario</label>
@@ -63,54 +59,64 @@
           <label for="clave-asociado">Clave del asociado</label>
           <input class="w-input" data-name="clave asociado" id="clave-asociado" maxlength="256" name="clave-asociado" type="text">
           <label class="field-label" for="email-10">Datos de Tarjeta</label>
-          <label for="nombre-tarjeta">Nombre del Tarjetahabiente</label>
-          <input class="w-input" data-name="nombre tarjeta" id="nombre-tarjeta" maxlength="256" name="nombre-tarjeta" required="required" type="text">
-          <label for="numero-tarjeta">Número de Tarjeta</label>
-          <input class="w-input" data-name="numero tarjeta" id="numero-tarjeta" maxlength="16" name="numero-tarjeta" placeholder="16 dígitos " required="required" type="text">
           <div class="w-row">
-            <div class="w-col w-col-2">
-              <label for="mes-tarjeta">Mes de Vencimiento</label>
-              <select class="w-select" data-name="mes tarjeta" id="mes-tarjeta" name="mes-tarjeta" required="required">
-                <option value="-1"></option>
-                <option value="1">01</option>
-                <option value="2">02</option>
-                <option value="3">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-              </select>
+            <div class="w-col w-col-6">
+              <label for="nombre-tarjeta">Nombre del Tarjetahabiente</label>
+              <input class="w-input" data-name="nombre tarjeta" id="nombre-tarjeta" maxlength="256" name="nombre-tarjeta" required="required" type="text">
+              <label for="numero-tarjeta">Número de Tarjeta</label>
+              <input class="w-input" data-name="numero tarjeta" id="numero-tarjeta" maxlength="16" name="numero-tarjeta" placeholder="16 dígitos " required="required" type="text">
             </div>
-            <div class="w-col w-col-2">
-              <label for="anio-tarjeta">Año de Vencimiento</label>
-              <select class="w-select" data-name="anio tarjeta" id="anio-tarjeta" name="anio-tarjeta" required="required">
-                <option value="-1"></option>
-                <option value="17">2017</option>
-                <option value="18">2018</option>
-                <option value="19">2019</option>
-                <option value="20">2020</option>
-                <option value="21">2021</option>
-                <option value="22">2022</option>
-                <option value="23">2023</option>
-              </select>
-            </div>
-            <div class="cvv-column w-col w-col-8">
-              <label for="cvv-tarjeta">Código de Seguridad (CVV)</label>
-              <input class="cvv-input w-input" data-name="cvv tarjeta" id="cvv-tarjeta" maxlength="4" name="cvv-tarjeta" required="required" type="text">
+            <div class="w-col w-col-6">
+              <div class="w-row">
+                <div class="w-col w-col-6">
+                  <div class="date-column">
+                    <label for="mes-tarjeta">Mes de Vencimiento</label>
+                    <select class="w-select" data-name="mes tarjeta" id="mes-tarjeta" name="mes-tarjeta" required="required">
+                      <option value="-1"></option>
+                      <option value="1">01</option>
+                      <option value="2">02</option>
+                      <option value="3">03</option>
+                      <option value="04">04</option>
+                      <option value="05">05</option>
+                      <option value="06">06</option>
+                      <option value="07">07</option>
+                      <option value="08">08</option>
+                      <option value="09">09</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-col w-col-6">
+                  <div class="date-column">
+                    <label for="anio-tarjeta">Año de Vencimiento</label>
+                    <select class="w-select" data-name="anio tarjeta" id="anio-tarjeta" name="anio-tarjeta" required="required">
+                      <option value="-1"></option>
+                      <option value="17">2017</option>
+                      <option value="18">2018</option>
+                      <option value="19">2019</option>
+                      <option value="20">2020</option>
+                      <option value="21">2021</option>
+                      <option value="22">2022</option>
+                      <option value="23">2023</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="cvv-tarjeta">Código de Seguridad (CVV)</label>
+                <input class="cvv-input w-input" data-name="Cvv Tarjeta 2" id="cvv-tarjeta" maxlength="4" name="cvv-tarjeta-2" required="required" type="password">
+              </div>
             </div>
           </div>
           <div class="w-checkbox">
             <input class="w-checkbox-input" data-name="Checkbox 2" id="checkbox-2" name="checkbox-2" required="required" type="checkbox">
-            <label class="w-form-label" for="checkbox-2">He leído y acepto el <a href="http://vag.mx/recursos/documentos/privacidad.pdf" target="_blank">Aviso de Privacidad</a>
+            <label class="w-form-label" for="checkbox-2">He leído y acepto el <a href="http://vag.mx/recursos/documentos/privacidad.pdf" target="_blank">Aviso de Privacidad</a> y lo <a href="http://vag.mx/recursos/documentos/terms-medica365.pdf" target="_blank">Términos y Condiciones</a>
             </label>
           </div>
           <div>Comprar tu membresia Medica365</div>
-          <div>Precio: $365.00</div>
+          <div>Precio: $399.00</div>
           <input class="form-button w-button" data-wait="Realizando Transacción..." id="boton-comprar" type="submit" value="Comprar">
         </form>
         <div class="w-form-done" id="exito-compra">
@@ -146,7 +152,7 @@
           <h4 class="footer-title">Producto</h4><a class="in-footer page-link" href="#">Comprar</a><a class="in-footer page-link" href="http://vag.mx/recursos/documentos/reembolso-de-gastos-medicos.pdf" target="_blank">Solicitar Reembolso Medico</a>
         </div>
         <div class="w-col w-col-2">
-          <h4 class="footer-title">Legal</h4><a class="in-footer page-link" href="http://vag.mx/recursos/documentos/privacidad.pdf" target="_blank">Aviso de Privacidad</a>
+          <h4 class="footer-title">Legal</h4><a class="in-footer page-link" href="http://vag.mx/recursos/documentos/privacidad.pdf" target="_blank">Aviso de Privacidad</a><a class="in-footer page-link" href="http://vag.mx/recursos/documentos/terms-medica365.pdf" target="_blank">Términos y Condiciones</a>
         </div>
       </div>
     </div>

@@ -26,11 +26,9 @@
 		  $('#comprar').show();
 		  $('#exito-compra').hide();
 		  $('#fracaso-compra').hide();
-		  $('boton-comprar').prop('value', 'Realizando Transacción...');
+		  $('#boton-comprar').prop('value', 'Realizando Transacción...');
 		  
 		  var nombre = $('#nombre').val();
-		  var primerApellido = $('#primer-apellido').val();
-		  var segundoApellido = $('#segundo-apellido').val();
 		  var ocupacion = $('#ocupacion').val();
 		  var telefono = $('#telefono-fijo').val();
 		  var celular = $('#celular').val();
@@ -39,8 +37,8 @@
 		  var beneficiario = $('#beneficiario').val();
 		  var asociado = $('#clave-asociado').val();
 		  
-		  var parametros = {token: token.id, nombre: nombre, primerApellido: primerApellido, segundoApellido: segundoApellido, ocupacion: ocupacion, telefono: telefono, celular: celular, email: email, rfc: rfc, beneficiario: beneficiario, asociado: asociado};
-		  var direccion = "http://localhost/Mermando/api/medica365/comprar/";
+		  var parametros = {token: token.id, nombre: nombre, ocupacion: ocupacion, telefono: telefono, celular: celular, email: email, rfc: rfc, beneficiario: beneficiario, asociado: asociado};
+		  var direccion = "http://medica365.vag.mx/api/comprar/";
 		  $.post(direccion, parametros, function(data){
 		      	console.log(data);
 		        if(data.Status == "OK"){
@@ -51,7 +49,7 @@
 		        	$('#comprar').show();
 		        	$('#exito-compra').hide();
 		        	$('#fracaso-compra').show("slow");
-		        	$('boton-comprar').prop('value', 'Comprar');
+		        	$('#boton-comprar').prop('value', 'Comprar');
 		        }
 		      }, "json");
 	  };
@@ -61,7 +59,8 @@
 		  $('#comprar').show();
 		  $('#exito-compra').hide();
 		  $('#fracaso-compra').show("slow");
-		  $('boton-comprar').prop('value', 'Comprar');
+		  $('#fracaso-compra').prop('value', 'Existe un error en los datos de la tarjeta. Favor de revisarlo');
+		  $('#boton-comprar').prop('value', 'Comprar');
 	  };
 	  
 	  function enviarCompra(){

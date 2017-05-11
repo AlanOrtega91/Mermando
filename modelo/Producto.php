@@ -10,48 +10,63 @@ class Producto {
 	
 	const POLIZA = 'HZ0123';
 	const MEDICA365 = 1;
-	const MEDICA365_PRECIO = 365.00;
+	const MEDICA365_PRECIO = 399.00;
 	
 
-	public function comprarMedica365($token, $nombre, $primerApellido, $segundoApellido, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado) {
+	public function comprarMedica365($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado) {
 		date_default_timezone_set ( 'America/Mexico_City' );
 		$vigencia = date ( "Y-m-d", strtotime('+1 year') );
 		$destino = $email;
 		$asunto = "Bienvenido a Medica365";
 		$emailAdmin = "vagmx2017@gmail.com";
 		
-		$idTransaccion = $this->realizarPago($token, $nombre, $primerApellido, $segundoApellido, $celular, $email);
+		$idTransaccion = $this->realizarPago($token, $nombre, $celular, $email);
 
-		$certificado = $this->guardarDatos($token, $nombre, $primerApellido, $segundoApellido, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idTransaccion, $vigencia);
+		$certificado = $this->guardarDatos($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idTransaccion, $vigencia);
 		
-		$pdf = $this->construirPDFMedica($certificado, $nombre." ".$primerApellido." ".$segundoApellido,$vigencia);
+		$pdf = $this->construirPDFMedica($certificado, $nombre, $vigencia);
 		
 		
-		$mensaje = $nombre." ".$primerApellido." ".$segundoApellido." te damos la bienvenida al grupo, adjunto encontraras el certificado que contiene tu tarjeta medica365.<br>
+		$mensaje = $nombre." te damos la bienvenida al grupo, adjunto encontraras el certificado que contiene tu tarjeta medica365.<br>
 				A partir de este momento podrás acceder a los descuentos de prestadores de servicios y establecimientos con los que contamos.<br>
 				La cobertura del seguro de ACCIDENTES PERSONALES así como la ASISTENCIA MEDICA TELEFÓNICA, entraran en vigor en un lapso de diez días hábiles.<br>
 				Tu numero de Poliza es: ". self::POLIZA." y tu numero de certificado es: ".$certificado."<br>
 						¡GRACIAS!";
 		//TODO: Esto en un thread diferente
 		$this->enviarEmail($asunto, $mensaje, $destino, $pdf);
-		$mensajeAdmin = "Se ha realizado la siguiente transaccion";
+		$mensajeAdmin = "Se ha realizado la siguiente transaccion:<br>
+							<table style='width:500px;border:1px solid black'>
+								<tr style='border:1px solid black'>
+									<th style='border:1px solid black'>Producto</th>
+									<th style='border:1px solid black'>Precio</th>
+									<th style='border:1px solid black'>Poliza</th>
+									<th style='border:1px solid black'>Certificado</th>
+								</tr>
+								<tr>
+									<th style='border:1px solid black'>Tarjeta Medica365</th>
+									<th style='border:1px solid black'>$".self::MEDICA365_PRECIO.".00</th>
+									<th style='border:1px solid black'>".self::POLIZA."</th>
+									<th style='border:1px solid black'>".$certificado."</th>
+								</tr>
+							</table>
+";
 		$this->enviarEmail("Venta Realizada", $mensajeAdmin, $emailAdmin, $pdf);
 		
 	}
 	
-	function realizarPago($token, $nombre, $primerApellido, $segundoApellido, $celular, $email)
+	function realizarPago($token, $nombre, $celular, $email)
 	{
-		$idUsuarioConekta = Pago::crearUsuario($token, $nombre." ".$primerApellido." ".$segundoApellido, $celular, $email);
+		$idUsuarioConekta = Pago::crearUsuario($token, $nombre, $celular, $email);
 		$idTransaccion = Pago::realizarPago($idUsuarioConekta, Producto::MEDICA365_PRECIO, 'Tarjeta Medica365', 'Tarjeta de Seguros de Gastos Medicos');
 		return $idTransaccion;
 	}
 	
-	function guardarDatos($token, $nombre, $primerApellido, $segundoApellido, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idTransaccion, $vigencia)
+	function guardarDatos($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idTransaccion, $vigencia)
 	{
 		$beneficiarioDB = new BeneficiarioDB();
 		$productoDB = new ProductoDB();
 		
-		$certificado = $beneficiarioDB->guardarBeneficiario($nombre, $primerApellido, $segundoApellido, $ocupacion,
+		$certificado = $beneficiarioDB->guardarBeneficiario($nombre, $ocupacion,
 				$telefono, $celular, $email, $rfc, $beneficiario, Producto::POLIZA, $vigencia);
 
 		$productoDB->guardarOrden(Producto::MEDICA365, $asociado, $certificado, $idTransaccion, Producto::MEDICA365_PRECIO);
@@ -138,20 +153,20 @@ class Producto {
 		//Ask for HTML-friendly debug output
 		$mail->Debugoutput = 'html';
 		//Set the hostname of the mail server
-		$mail->Host = "as1r2052.servwingu.mx";
+		$mail->Host = "as1r2064.servwingu.mx";
 		//Set the SMTP port number - likely to be 25, 465 or 587
 		$mail->Port = 26;
 		//Whether to use SMTP authentication
 		$mail->SMTPAuth = true;
 		//Username to use for SMTP authentication
-		$mail->Username = "topbidmx";
+		$mail->Username = "vagmx";
 		//Password to use for SMTP authentication
-		$mail->Password = 'HV!wE!km8$E';
+		$mail->Password = 'NnTt2$mhH*d';
 	
 		$mail->Subject = $asunto;
 		$mail->Body    = $mensaje;
 		
-		$mail->setFrom('ventas@topbid.mx', 'Medica365');
+		$mail->setFrom('ventas@vag.mx', 'Medica365');
 		$mail->addAddress($destino);						// Name is optional
 	
 		$mail->addAttachment($attach, 'Certificado Medica365', $encoding = 'base64', $type = 'application/pdf');	  // Add attachments

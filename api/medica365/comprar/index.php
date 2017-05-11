@@ -4,20 +4,15 @@ require_once dirname(__FILE__)."/../../../modelo/Producto.php";
 
 header('Content-Type: text/html; charset=utf8');
 
-if (!isset($_POST['token']) || !isset($_POST['nombre']) || !isset($_POST['primerApellido'])
-		|| !isset($_POST['ocupacion']) || !isset($_POST['telefono']) || !isset($_POST['celular'])
-		|| !isset($_POST['email']) || !isset($_POST['rfc']) || !isset($_POST['beneficiario'])) {
+if (!isset($_POST['token']) || !isset($_POST['nombre']) || !isset($_POST['ocupacion']) 
+		|| !isset($_POST['telefono']) || !isset($_POST['celular']) || !isset($_POST['email']) 
+		|| !isset($_POST['rfc']) || !isset($_POST['beneficiario'])) {
 			die(json_encode(array("Status"=>"ERROR missing values")));
 		}
-
+		
 	try{
 		$token = SafeString::safe($_POST['token']);
 		$nombre = SafeString::safe($_POST['nombre']);
-		$primerApellido = SafeString::safe($_POST['primerApellido']);
-		$segundoApellido = null;
-		if (isset($_POST['segundoApellido'])) {
-			$segundoApellido = SafeString::safe($_POST['segundoApellido']);
-		}
 		$ocupacion = SafeString::safe($_POST['ocupacion']);
 		$telefono = SafeString::safe($_POST['telefono']);
 		$celular = SafeString::safe($_POST['celular']);
@@ -30,17 +25,21 @@ if (!isset($_POST['token']) || !isset($_POST['nombre']) || !isset($_POST['primer
 		}
 		
 		$producto = new Producto();
-		$producto->comprarMedica365($token, $nombre, $primerApellido, $segundoApellido, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado);
+		$producto->comprarMedica365($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado);
 		
 		echo json_encode(array("Status"=>"OK"));
 		
-	} catch(errorWithDatabaseException $e) {
-		echo json_encode(array("Status"=>"ERROR DB"));
+	} catch(errorConBaseDeDatos $e) {
+		echo json_encode(array("Status"=>"ERROR DB = ".$e->getMessage()));
 	} catch(errorMakingPaymentException $e) {
-		echo json_encode(array("Status"=>"ERROR PAGO"));
+		echo json_encode(array("Status"=>"ERROR PAGO = ".$e->getMessage()));
  	} catch(Conekta\ErrorList $e) {
- 		echo json_encode(array("Status"=>"ERROR Datos".$e->getMessage()));
+ 		$error = "";
+ 		foreach($e->details as &$errorDetail) {
+ 			$error = $error. "-".$errorDetail->getMessage();
+ 		}
+ 		echo json_encode(array("Status"=>"ERROR Datos = ".$error));
  	} catch (Exception $e) {
- 		echo json_encode(array("Status"=>"ERROR Desconocido"));
+ 		echo json_encode(array("Status"=>"ERROR Desconocido = ".$e->getMessage()));
  	}
 ?>

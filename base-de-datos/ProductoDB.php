@@ -15,15 +15,13 @@ class ProductoDB extends BaseDeDatos {
  			$asociado = "null";
  		} else {
  			$query = sprintf(AsociadoDB::BUSCAR_ASOCIADO, $asociado);
- 			$result = $this->mysqli->query($query);
- 			if($result != TRUE || $result->num_rows == 0) {
+ 			$result = $this->ejecutarQuery($query);
+ 			if($result->num_rows == 0) {
  				$asociado = "null";
  			}
  		}
  		$query = sprintf(self::AGREGAR_ORDEN, $idProducto, $asociado, $certificado, $idTrasaccion, $precio, $fecha);
- 		if($this->mysqli->query($query) != TRUE) {
- 			throw new errorWithDatabaseException('Query failed'.$query);
- 		}
+ 		$this->ejecutarQuery($query);
  	}
 }
 ?>
