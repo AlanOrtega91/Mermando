@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--  This site was created in Webflow. http://www.webflow.com -->
+<!--  Last Published: Fri May 19 2017 16:41:55 GMT+0000 (UTC)  -->
+<html data-wf-page="58ab5a2d24cb6c757b30ff06" data-wf-site="58911ac7b961c9956c76788c">
+<head>
+  <meta charset="utf-8">
+  <title>Compra</title>
+  <meta content="Compra" property="og:title">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/medica365.webflow.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script type="text/javascript">
+    WebFont.load({
+      google: {
+        families: ["Roboto:300,regular,500","Roboto Condensed:300,regular,700","Roboto Slab:300,regular,700","Arbutus Slab:regular"]
+      }
+    });
+  </script>
+  <script src="js/modernizr.js" type="text/javascript"></script>
+  <link href="images/icon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="images/metric-webclip.png" rel="apple-touch-icon">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://conektaapi.s3.amazonaws.com/v0.3.2/js/conekta.js"></script>
+  <script src="jsf/medica365.js" type="text/javascript"></script>
+</head>
+<body>
+  <div class="navigation w-nav" data-animation="default" data-collapse="medium" data-duration="400">
+    <div class="w-container">
+      <a class="brand-link w-nav-brand" href="index.html"><img src="images/logo.png" width="150">
+      </a>
+      <nav class="nav-menu w-nav-menu" role="navigation"><a class="nav-link w-nav-link" href="index.html">tarjeta</a><a class="nav-link w-nav-link" href="index.html">beneficios</a><a class="nav-link w-nav-link" href="compra.html">comprar</a>
+      </nav>
+      <div class="menu nav-link w-nav-button">
+        <div class="w-icon-nav-menu"></div>
+      </div>
+    </div>
+  </div>
+  <div class="section" id="compra_block">
+    <div class="compra-container w-container">
+      <div class="w-form">
+        <form action="javascript:void(0);" data-name="Datos Personales" id="forma" method="post" name="wf-form-Datos-Personales">
+          <label for="nombre">Nombre</label>
+          <input class="w-input" data-name="nombre" id="nombre" maxlength="256" name="nombre" required="required" type="text">
+          <label for="ocupacion">Ocupación</label>
+          <input class="w-input" data-name="ocupacion" id="ocupacion" maxlength="256" name="ocupacion" required="required" type="text">
+          <label for="telefono-fijo">Teléfono fijo</label>
+          <input class="w-input" data-name="telefono fijo" id="telefono-fijo" maxlength="12" name="telefono-fijo" pattern=".{8,12}" placeholder="Al menos 8 dígitos" required="required" type="text">
+          <label for="celular">Celular</label>
+          <input class="w-input" data-name="celular" id="celular" maxlength="10" name="celular" pattern=".{10,10}" placeholder="10 dígitos" required="required" type="text">
+          <label for="email">Email</label>
+          <input class="w-input" data-name="email" id="email" maxlength="256" name="email" placeholder="ejemplo@vag.mx" required="required" type="email">
+          <label for="rfc">RFC</label>
+          <input class="w-input" data-name="rfc" id="rfc" maxlength="256" name="rfc" required="required" type="text">
+          <label for="beneficiario">Beneficiario</label>
+          <input class="w-input" data-name="beneficiario" id="beneficiario" maxlength="256" name="beneficiario" required="required" type="text">
+          <label for="clave-asociado">Clave del asociado</label>
+          <input class="w-input" data-name="clave asociado" id="clave-asociado" maxlength="256" name="clave-asociado" type="text">
+          <label class="field-label" for="email-10">Datos de Tarjeta</label>
+          <div class="w-row">
+            <div class="w-col w-col-6">
+              <label for="nombre-tarjeta">Nombre del Tarjetahabiente</label>
+              <input class="w-input" data-name="nombre tarjeta" id="nombre-tarjeta" maxlength="256" name="nombre-tarjeta" required="required" type="text">
+              <label for="numero-tarjeta">Número de Tarjeta</label>
+              <input class="w-input" data-name="numero tarjeta" id="numero-tarjeta" maxlength="16" name="numero-tarjeta" placeholder="16 dígitos " required="required" type="text">
+            </div>
+            <div class="w-col w-col-6">
+              <div class="w-row">
+                <div class="w-col w-col-6">
+                  <div class="date-column">
+                    <label for="mes-tarjeta">Mes de Vencimiento</label>
+                    <select class="w-select" data-name="mes tarjeta" id="mes-tarjeta" name="mes-tarjeta" required="required">
+                      <option value="-1"></option>
+                      <option value="1">01</option>
+                      <option value="2">02</option>
+                      <option value="3">03</option>
+                      <option value="04">04</option>
+                      <option value="05">05</option>
+                      <option value="06">06</option>
+                      <option value="07">07</option>
+                      <option value="08">08</option>
+                      <option value="09">09</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-col w-col-6">
+                  <div class="date-column">
+                    <label for="anio-tarjeta">Año de Vencimiento</label>
+                    <select class="w-select" data-name="anio tarjeta" id="anio-tarjeta" name="anio-tarjeta" required="required">
+                      <option value="-1"></option>
+                      <option value="17">2017</option>
+                      <option value="18">2018</option>
+                      <option value="19">2019</option>
+                      <option value="20">2020</option>
+                      <option value="21">2021</option>
+                      <option value="22">2022</option>
+                      <option value="23">2023</option>
+                      <option value="24">2024</option>
+                      <option value="25">2025</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="cvv-tarjeta">Código de Seguridad (CVV)</label>
+                <input class="cvv-input w-input" data-name="Cvv Tarjeta 2" id="cvv-tarjeta" maxlength="4" name="cvv-tarjeta-2" required="required" type="password">
+              </div>
+            </div>
+          </div>
+          <div class="w-checkbox">
+            <input class="w-checkbox-input" data-name="Checkbox 2" id="checkbox-2" name="checkbox-2" required="required" type="checkbox">
+            <label class="w-form-label" for="checkbox-2">He leído y acepto el <a href="http://vag.mx/recursos/documentos/privacidad.pdf" target="_blank">Aviso de Privacidad</a> y lo <a href="http://vag.mx/recursos/documentos/terms-medica365.pdf" target="_blank">Términos y Condiciones</a>
+            </label>
+          </div>
+          <div>Comprar tu membresia Medica365</div>
+          <div>Precio: $399.00</div>
+          <input class="form-button w-button" data-wait="Realizando Transacción..." id="forma-boton" type="submit" value="Comprar">
+        </form>
+        <div class="w-form-done" id="mensaje-exito">
+          <div id="mensaje-exito-texto">Tu compra ha sido realizada con éxito! Hemos enviado un correo a tu cuenta con la información de tu compra!</div>
+        </div>
+        <div class="w-form-fail" id="mensaje-error">
+          <div id="mensaje-error-texto">Ocurrió un error. Vuelve a intentarlo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer section">
+    <div class="w-container">
+      <div class="w-row">
+        <div class="w-col w-col-6">
+          <div class="footer logo-text">Medica365</div>
+          <div class="footer-slogan">(R) 2015&nbsp;por Ibarrola &amp; Oseguera, &nbsp;S.A. de C.V.</div>
+          <div class="social-icon-group">
+            <a class="social-icon w-inline-block" href="#"><img src="images/facebook-icon.svg">
+            </a>
+            <a class="social-icon w-inline-block" href="#"><img src="images/twitter-icon.svg">
+            </a>
+            <a class="social-icon w-inline-block" href="#"><img src="images/linkdin-icon-white.svg">
+            </a>
+            <a class="social-icon w-inline-block" href="mailto:contacto@vag.mx"><img src="images/email-icon-white.svg">
+            </a>
+          </div>
+        </div>
+        <div class="w-col w-col-2">
+          <h4 class="footer-title">compañia</h4><a class="in-footer page-link" href="http://vag.mx">VAG</a><a class="in-footer page-link" href="http://vag.mx">Productos</a><a class="in-footer page-link" href="http://vag.mx">Afiliarse</a>
+        </div>
+        <div class="w-col w-col-2">
+          <h4 class="footer-title">Producto</h4><a class="in-footer page-link" href="#">Comprar</a><a class="in-footer page-link" href="http://vag.mx/recursos/documentos/reembolso-de-gastos-medicos.pdf" target="_blank">Solicitar Reembolso Medico</a>
+        </div>
+        <div class="w-col w-col-2">
+          <h4 class="footer-title">Legal</h4><a class="in-footer page-link" href="http://vag.mx/recursos/documentos/privacidad.pdf" target="_blank">Aviso de Privacidad</a><a class="in-footer page-link" href="http://vag.mx/recursos/documentos/terms-medica365.pdf" target="_blank">Términos y Condiciones</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
+  <script src="js/webflow.js" type="text/javascript"></script>
+  <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+</body>
+</html>
