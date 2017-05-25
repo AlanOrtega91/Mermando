@@ -22,9 +22,9 @@ class Asociado {
 		$this->dataBase->nuevoAsociado($nombre, $email, $contraseña);
 		$this->dataBase->usarOrdenEnRegistro($orden);
 		
-		//$asunto = "¡Bienvenido a Mermando!";
-		//$mensaje = "";
-		//$this->enviarCorreo($asunto, $mensaje, $mail);
+		$asunto = "¡Bienvenido a Mermando!";
+		$mensaje = "";
+		$this->enviarCorreo($asunto, $mensaje, $mail);
 	}
 	
 	function enviarEmail($asunto,$mensaje,$destino, $attach){
@@ -92,7 +92,9 @@ class Asociado {
 	}
 	
 	function leerComisionActual($token) {
-		
+		$comisionesTotales = $this->dataBase->comisionesTotales($token);
+		$comisionesPagadas = $this->dataBase->comisionesPagadasTotales($token);
+		return $comisionesTotales[0] - $comisionesPagadas[0];
 	}
 }
 

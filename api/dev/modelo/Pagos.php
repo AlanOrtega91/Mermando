@@ -26,6 +26,8 @@ class Pago {
 		}
 		return $customer->id;
 	}
+	
+	
 
 	public static function realizarPago($idUsuarioConekta, $precio, $nombreProducto, $descripcionProducto) {
 		\Conekta\Conekta::setApiKey(self::KEY);
@@ -52,9 +54,41 @@ class Pago {
 						'customer_id' => $idUsuarioConekta
 				)//customer_info
 				));
-		if (! $charge)
+		if (! $charge) {
 			throw new errorMakingPaymentException ();
+		}
 		return $charge->id;
+	}
+	
+	public static function generarOrdenOXXO($nombre, $email, $celular, $precio, $nombreProducto, $descripcionProducto) {
+		\Conekta\Conekta::setApiKey(self::KEY);
+		\Conekta\Conekta::setApiVersion("2.0.0");
+		$precioConekta =  $precio*100;
+		
+		$orden = \Conekta\Order::create(array(
+				'line_items' => array(
+						array(
+								'name' => $nombreProducto,
+								'description' => $descripcionProducto,
+								'unit_price' => $precioConekta,
+								'quantity' => 1
+						)
+				),//line_items
+				'charges' => array(
+						array(
+								'payment_method' => array(
+										'type' => 'oxxo_cash'
+								)
+						)
+				),//charges
+				'currency' => 'mxn',
+				'customer_info' => array(
+						'name' => $nombre,
+						'email' => $email,
+						'phone' => $celular,
+				)//customer_info
+		));
+		return $orden;
 	}
 }
 

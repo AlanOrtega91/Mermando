@@ -2,9 +2,17 @@
   jQuery("document").ready(function(){
 	  
 	  var baseAPI = "https://medica365.vag.mx/api/interfaz/";
+	  var sending = false;
 	  
 	  Conekta.setPublishableKey('key_eosVxYfvc7g6Hxo9j6Mgrsg');
+
 	  $('#forma').submit(function tokenizar(event){
+		  if (sending) {
+			  console.log("regresa");
+			  return;
+		  }
+		  sending = true;
+		  $('#forma-boton').prop('value', 'Comprando...');
 		  var numero = $('#numero-tarjeta').val();
 		  var nombre = $('#nombre-tarjeta').val();
 		  var mes = $('#mes-tarjeta').val();
@@ -48,13 +56,15 @@
 	  var compraContesto = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	mosrarExito();
+	        	mostrarExito();
 	        } else{
-	        	var error = 'Error';
-	        	if(datos.clave == "") {
-	        		error = 'otro';
+	        	if(datos.clave == "datos") {	
+	        		mostrarError(datos.explicacion);
+	        	} else if(datos.clave == "pago") {	
+	        		mostrarError(datos.explicacion);
+	        	} else {
+	        		mostrarError("Existe un error revisa tu informacion o intenta mas tarde");
 	        	}
-	        	mostrarError('Error');
 	        }
 	  }
 	  
@@ -75,6 +85,7 @@
 		  $('#mensaje-error').show("slow");
 		  $('#mensaje-error-texto').html(error);
 		  $('#forma-boton').prop('value', 'Comprar');
+		  sending = false;
 	  }
   });
 })(jQuery);

@@ -8,20 +8,22 @@
 	  var leerCuentaRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	$('#cuenta-nombre').text(datos.info.nombre);
+	        	$('#cuenta-nombre').text(datos.info.nombre + " (" + datos.info.clave + ")");
 	        	$('#cuenta-email').html(datos.info.email);
 	        } else{
 	        	if(datos.clave == "email") {	
-	        		mostrarError("El email no existe");
+	        		mostrarError("El email ya esta siendo usado en otra cuenta");
+	        	} else if(datos.clave == "orden") {	
+	        		mostrarError("El numero de orden es invalido");
 	        	} else {
-	        		mostrarError("Error al leer");
+	        		mostrarError("Error al registrar la cuenta. Intentalo mas tarde");
 	        	}
 	        }
 	  }
 	  
 	  var leerCuentaError = function (datos) {
 		  console.log(datos);
-		  mostrarError("Error con el servidor");
+		  mostrarError('Error de Servidor intentalo mas tarde');
 	  }
 	  
 	  $.post(direccionCuenta,parametrosCuenta, leerCuentaRespondio,"json").fail(leerCuentaError);
@@ -34,20 +36,21 @@
 	  var leerComisionRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	$('#cuenta-nombre').text(datos.info.nombre);
-	        	$('#cuenta-email').html(datos.info.email);
+	        	$('#cuenta-comisiones').html("$" + datos.comision);
 	        } else{
 	        	if(datos.clave == "email") {	
-	        		mostrarError("El email no existe");
+	        		mostrarError("El email ya esta siendo usado en otra cuenta");
+	        	} else if(datos.clave == "orden") {	
+	        		mostrarError("El numero de orden es invalido");
 	        	} else {
-	        		mostrarError("Error al leer");
+	        		mostrarError("Error al registrar la cuenta. Intentalo mas tarde");
 	        	}
 	        }
 	  }
 	  
 	  var leerComisionError = function (datos) {
 		  console.log(datos);
-		  mostrarError("Error con el servidor");
+		  mostrarError('Error de Servidor intentalo mas tarde');
 	  }
 	  
 	  $.post(direccionComision,parametrosComision, leerComisionRespondio,"json").fail(leerComisionError);

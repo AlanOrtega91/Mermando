@@ -19,16 +19,21 @@
 		  console.log(datos);
 	        if(datos.status == "ok"){
 	        	guardarToken(datos.token);
-	        	window.location.replace("http://vag.mx/dev/cuenta/cuenta.html");
+	        	window.location.replace("http://vag.mx/cuenta/cuenta.html");
 	        } else{
 	        	if(datos.clave == "email") {	
-	        		mostrarError("El email no existe");
+	        		mostrarError("El email ya esta siendo usado en otra cuenta");
+	        	} else if(datos.clave == "orden") {	
+	        		mostrarError("El numero de orden es invalido");
+	        	} else {
+	        		mostrarError("Error al registrar la cuenta. Intentalo mas tarde");
 	        	}
 	        }
 	  }
 	  
 	  var inicioSesionError = function (datos) {
 		  console.log(datos);
+		  mostrarError('Error de Servidor intentalo mas tarde');
 	  }
 	  
 	  function guardarToken(token){

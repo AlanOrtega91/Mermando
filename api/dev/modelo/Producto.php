@@ -2,8 +2,11 @@
 require_once dirname ( __FILE__ ) . "/../base-de-datos/BeneficiarioDB.php";
 require_once dirname ( __FILE__ ) . "/../base-de-datos/ProductoDB.php";
 require_once dirname ( __FILE__ ) . "/../base-de-datos/AsociadoDB.php";
+require_once dirname ( __FILE__ ) . "/../base-de-datos/DatosPagoEsperaDB.php";
 require_once dirname ( __FILE__ ) . "/Pagos.php";
-require_once dirname ( __FILE__ ) . "/../../../dev/recursos/FDPDF/MultiCellBlt2.php";
+require_once dirname ( __FILE__ ) . "/OrdenOxxo.php";
+require_once dirname ( __FILE__ ) . "/../../../dev/recursos/FPDF/fpdf.php";
+require_once dirname ( __FILE__ ) . "/../../../dev/recursos/FPDI/fpdi.php";
 require_once dirname ( __FILE__ ) . "/../../../dev/recursos/PHPMailer/PHPMailerAutoload.php";
 
 
@@ -18,21 +21,21 @@ class Producto {
 		date_default_timezone_set ( 'America/Mexico_City' );
 		$vigencia = date ( "Y-m-d", strtotime('+1 year') );
 		$destino = $email;
-		$asunto = "Bienvenido a Medica365";
+		$asunto = "Bienvenido a Medica365 DEV";
 		$emailAdmin = "vagmx2017@gmail.com";
 		
 		$idTransaccion = $this->realizarPago($token, $nombre, $celular, $email);
 
-		$certificado = $this->guardarDatos($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idTransaccion, $vigencia);
+		$certificado = $this->guardarDatos($nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idTransaccion, $vigencia);
 		
-		$pdf = $this->construirPDFMedica($certificado, $nombre, $vigencia);
+		$nombreCurado = iconv('UTF-8','windows-1252',$nombre);
+		$pdf = $this->construirPDFMedica($certificado, $nombreCurado, $vigencia);
 		
-		
-		$mensaje = $nombre." te damos la bienvenida al grupo, adjunto encontraras el certificado que contiene tu tarjeta medica365.<br>
+		$mensaje = $nombreCurado." te damos la bienvenida al grupo, adjunto encontrarás el certificado que contiene tu tarjeta medica365.<br>
 				A partir de este momento podrás acceder a los descuentos de prestadores de servicios y establecimientos con los que contamos.<br>
-				La cobertura del seguro de ACCIDENTES PERSONALES así como la ASISTENCIA MEDICA TELEFÓNICA, entraran en vigor en un lapso de diez días hábiles.<br>
-				Tu numero de Poliza es: ". self::POLIZA." y tu numero de certificado es: ".$certificado."<br>
-				Tu numero de orden es: ". $idTransaccion."<br>
+				La cobertura del seguro de ACCIDENTES PERSONALES así como la ASISTENCIA MÉDICA TELEFÓNICA, entrarán en vigor en un lapso de diez días hábiles.<br>
+				Tu número de Póliza es: ". self::POLIZA." y tu número de certificado es: ".$certificado."<br>
+				Tu número de orden es: ". $idTransaccion."<br>
 						¡GRACIAS!";
 		//TODO: Esto en un thread diferente
 		$this->enviarEmail($asunto, $mensaje, $destino, $pdf);
@@ -52,8 +55,24 @@ class Producto {
 								</tr>
 							</table>
 ";
-		$this->enviarEmail("Venta Realizada", $mensajeAdmin, $emailAdmin, $pdf);
+		$this->enviarEmail("Venta Realizada Dev", $mensajeAdmin, $emailAdmin, $pdf);
 		
+	}
+	
+	function generarOrdenOXXOMedica365($nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado) {
+		$destino = $email;
+		$asunto = "Orden de Pago Medica365 DEV";
+		$emailAdmin = "vagmx2017@gmail.com";
+		
+		$orden = Pago::generarOrdenOXXO($nombre, $email, $celular, self::MEDICA365_PRECIO, 'Tarjeta Medica365', 'Tarjeta de Seguros de Gastos Medicos');
+		
+		$certificado = $this->guardarDatosOXXO($nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $orden->id, $vigencia);
+		
+		$nombreCurado = iconv('UTF-8','windows-1252', $nombre);
+		
+		$mensaje = OrdenOxxo::generarReciboHTML($orden->charges[0]->payment_method->reference, $orden->amount/100, $orden->currency);
+		$this->enviarEmail($asunto, $mensaje, $destino, $pdf);
+		return array("referencia"=>$orden->charges[0]->payment_method->reference,"precio"=> $orden->amount/100,"moneda"=> $orden->currency);
 	}
 	
 	function realizarPago($token, $nombre, $celular, $email)
@@ -63,7 +82,7 @@ class Producto {
 		return $idTransaccion;
 	}
 	
-	function guardarDatos($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idTransaccion, $vigencia)
+	function guardarDatos($nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idTransaccion, $vigencia)
 	{
 		$beneficiarioDB = new BeneficiarioDB();
 		$productoDB = new ProductoDB();
@@ -83,67 +102,64 @@ class Producto {
 		return $certificado;
 	}
 
+	function guardarDatosOXXO($nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idOrden, $vigencia)
+	{
+		$datosPagoEsperaDB = new DatosPagoEsperaDB();
+		$productoDB = new ProductoDB();
+		$asociadoDB = new AsociadoDB();
+		
+		if ($asociado) {
+			if (!$asociadoDB->existeAsociado($asociado)) {
+				$asociado = "null";
+			}
+		} else {
+			$asociado = "null";
+		}
+		$productoDB->guardarOrden(Producto::MEDICA365, $asociado, "null", $idOrden, Producto::MEDICA365_PRECIO);
+		$datosPagoEsperaDB->guardarDatosEspera($nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, Producto::POLIZA, $idOrden);
+	}
 	
 	function construirPDFMedica($certificado, $nombre, $vigencia) {
-		//TODO: cambiar a imagen y cambiar ciertas cosas solamente
-		$border = 0;
-		$tableWidth1 = 40;
-		$tableWidth2 = 45;
-		$tableHeight = 8;
-		$pdf = new PDF('P','mm');
-		$pdf->AddPage();
-		$pdf->Image(dirname ( __FILE__ ) . "/../../../dev/recursos/imagenes/logo_mail.png",50,10,110,0,'PNG');
-		$pdf->Cell(100,50,'',$border,2);
-		$pdf->SetFont('Arial','B',12);
-		$pdf->Cell(100,8,'',$border,0);
-		$pdf->Cell($tableWidth1,$tableHeight,'POLIZA',$border,0,'C');
-		$pdf->Cell($tableWidth2,$tableHeight,self::POLIZA,$border,1,'C');
-		$pdf->Cell(100,8,'',$border,0);
-		$pdf->Cell($tableWidth1,$tableHeight,'CERTIFICADO',$border,0,'C');
-		$pdf->Cell($tableWidth2,$tableHeight,$certificado,$border,1,'C');
-		$pdf->Cell(100,8,'',$border,0);
-		$pdf->Cell($tableWidth1,$tableHeight,'VIGENCIA',$border,0,'C');
-		$pdf->Cell($tableWidth2,$tableHeight,$vigencia,$border,1,'C');
-		
-		$pdf->SetFont('Arial','BU',16);
-		$pdf->Cell(0,8,'¡'.$nombre.'!',$border,1,'C');
-		$pdf->SetFont('Arial','',12);
-		$pdf->MultiCell(0,8,'Felicitaciones, te has afiliado con éxito al grupo de beneficios “MEMBRESIA MEDICA365”, por lo que ahora cuentas con un SEGURO DE ACCIDENTES PERSONALES, el cual te brinda protección y tranquilidad cuando más la necesites. Así mismo, tienes acceso a descuentos con diversos prestadores de servicios y establecimientos, los cuales podrás consultar en nuestra página web diariamente. Tus nuevos beneficios son:',1,'J');
-		
-
-		$column_width = $pdf->getPageWidth() - 30;
-		$lista = array();
-		$lista['bullet'] = '>';
-		$lista['margin'] = ' ';
-		$lista['indent'] = 5;
-		$lista['spacer'] = 5;
-		$lista['text'] = array(
-				'Asesoría médica telefónica 24/7',
-				'Consultas médicas a domicilio',
-				'Servicio de ambulancia sin costo',
-				'Reembolso de gastos médicos por accidentes personales hasta $15,000 pesos al año',
-				'Seguro por muerte accidental de $100,000 pesos',
-				'Seguro de pérdidas orgánicas de $100,000 pesos',
-				'Descuentos en análisis clínicos, estudios radiológicos, farmacias, tiendas, restaurantes');
-		$pdf->SetX(20);
-		$pdf->MultiCellBltArray($column_width-$pdf->getX(),6,$lista);
-		$pdf->Ln(10);
-		$pdf->WriteHTML('*Consulta términos y condiciones en: <a href="www.tarjetamedica365.com">www.tarjetamedica365.com</a>');
-		$pdf->Ln();
-		$pdf->Image(dirname ( __FILE__ ) . "/../../../dev/recursos/imagenes/tarjeta_corte.png",50,$pdf->getPageHeight() - 60 ,110,0,'PNG');
-		$pdf->Cell(0,30,'',$border,1);
-		$pdf->SetFont('Arial','B',8);
-		$pdf->Cell(40.5,3,"",$border,0);
-		$pdf->Cell(35,3.2,$nombre,$border,1,'C');
-		$pdf->Cell(40.5,3.2,"",$border,0);
-		$pdf->Cell(35,3.2,self::POLIZA,$border,1,'C');
-		$pdf->Cell(44,3.2,"",$border,0);
-		$pdf->Cell(35,3.2,$certificado,$border,1,'C');
-		$pdf->Cell(37,3.2,"",$border,0);
-		$pdf->Cell(34,3.2,$vigencia,$border,1,'C');
-		$path = dirname ( __FILE__ ) . "/../../../dev/recursos/medica365-afiliados/".self::POLIZA."-".$certificado.".pdf";
-		$pdf->Output("F",$path,true);
-		return $path;
+		try {
+			$border = 1;
+			$pdf = new FPDI();
+			$pdf->AddPage();
+			$pdf->setSourceFile(dirname ( __FILE__ ) . "/../../../dev/recursos/documentos/bienvenida-medica365.pdf");
+			$page = $pdf->importPage(1);
+			$pdf->useTemplate($page,0,0,null,null,false);
+			$pdf->SetFont('Times','B',12);
+			//Offset a la tabla
+			$pdf->SetXY(168,64);
+			//Dato de la tabla
+			$pdf->Cell(29,6,self::POLIZA,$border,2,'C');
+			$pdf->Cell(29,6,$certificado,$border,2,'C');
+			$pdf->Cell(29,6,$vigencia,$border,2,'C');
+			//Nombre
+			$pdf->SetXY(0,95);
+			$pdf->SetFont('Arial','BU',16);
+			
+			$pdf->Cell(0,8,'¡'.$nombre.'!',$border,1,'C');
+			
+			$pdf->SetFont('Times','B',10);
+			//Tarjeta Nombre
+			$pdf->SetXY(25,246);
+			$pdf->Cell(60,4,$nombre,$border,2,'L');
+			//Tarjeta poliza
+			$pdf->SetXY(45,252);
+			$pdf->Cell(60,4,self::POLIZA,$border,2,'L');
+			//Tarjeta certificado
+			$pdf->SetXY(52,257);
+			$pdf->Cell(60,4,$certificado,$border,2,'L');
+			//tarjeta vigencia
+			$pdf->SetXY(25,262);
+			$pdf->Cell(60,4,$vigencia,$border,2,'L');
+			
+			$path = dirname ( __FILE__ ) . "/../../../dev/recursos/medica365-afiliados/".self::POLIZA."-".$certificado.".pdf";
+			$pdf->Output("F",$path,true);
+			return $path;
+		} catch (Exception $e) {
+			return null;
+		}
 	}
 	
 	function enviarEmail($asunto,$mensaje,$destino, $attach){

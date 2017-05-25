@@ -13,8 +13,7 @@
 		  var numeroOrden = $('#orden-compra').val();
 		  
 		  if (contraseña != contraseña2) {
-			  $('#mensaje-error').text('Contraseñas no coinciden');
-			  $('#mensaje-error').show('slow');
+			  mostrarError("Contraseñas no coinciden");
 			  return;
 		  }
 		  
@@ -26,19 +25,21 @@
 	  var afiliacionRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	$('#afiliarse').hide("slow");
-	        	$('#mensaje-exito').show("slow");
-	        	$('#mensaje-fracaso').hide();
+	        	mostrarError();
 	        } else{
-	        	if(datos.clave == "") {
-	        		mostrarError('Error');
+	        	if(datos.clave == "email") {	
+	        		mostrarError("El email ya esta siendo usado en otra cuenta");
+	        	} else if(datos.clave == "orden") {	
+	        		mostrarError("El numero de orden es invalido");
+	        	} else {
+	        		mostrarError("Error al registrar la cuenta. Intentalo mas tarde");
 	        	}
 	        }
 	  }
 	  
 	  var afiliacionError = function (datos) {
 		  console.log(datos);
-		  mostrarError("Error");
+		  mostrarError('Error de Servidor intentalo mas tarde');
 	  }
 	  
 	  function mostrarExito(){

@@ -24,23 +24,24 @@ if (!isset($_POST['token']) || !isset($_POST['nombre']) || !isset($_POST['ocupac
 		if (isset($_POST['asociado'])) {
 			$asociado = SafeString::safe($_POST['asociado']);
 		}
+		$tipo = $_POST['tipo'];
 		
 		$producto = new Producto();
 		$producto->comprarMedica365($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado);
-		
+
 		echo json_encode(array("status"=>"ok"));
 		
 	} catch(errorConBaseDeDatos $e) {
-		echo json_encode(array("status"=>"error","clave"=>"db = ".$e->getMessage()));
+		echo json_encode(array("status"=>"error","clave"=>"db","explicacion"=>$e->getMessage()));
 	} catch(errorMakingPaymentException $e) {
-		echo json_encode(array("status"=>"error","clave"=>"pago = ".$e->getMessage()));
- 	} catch(Conekta\ErrorList $e) {
- 		$error = "";
- 		foreach($e->details as &$errorDetail) {
- 			$error = $error. "-".$errorDetail->getMessage();
- 		}
- 		echo json_encode(array("status"=>"error","clave"=>"datos = ".$error));
- 	} catch (Exception $e) {
- 		echo json_encode(array("status"=>"error","clave"=>"desconocido = ".$e->getMessage()));
- 	}
+		echo json_encode(array("status"=>"error","clave"=>"pago","explicacion"=>$e->getMessage()));
+	} catch(Conekta\ErrorList $e) {
+		$error = "";
+		foreach($e->details as &$errorDetail) {
+			$error = $error. "-".$errorDetail->getMessage();
+		}
+		echo json_encode(array("status"=>"error","clave"=>"datos","explicacion"=>$e->getMessage()));
+	} catch (Exception $e) {
+		echo json_encode(array("status"=>"error","clave"=>"desconocido","explicacion"=>$e->getMessage()));
+	}
 ?>
