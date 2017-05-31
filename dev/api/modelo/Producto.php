@@ -36,7 +36,7 @@ class Producto {
 	}
 	
 	function generarEmailUsuarioBienvenidaMedica365($nombre, $certificado, $idTransaccion, $email, $pdf) {
-		$asunto = "Bienvenido a Medica365";
+		$asunto = "Bienvenido a Medica365 DEV";
 		
 
 		$mensaje = $nombre." te damos la bienvenida al grupo, adjunto encontrarás el certificado que contiene tu tarjeta medica365.<br>
@@ -44,7 +44,8 @@ class Producto {
 				La cobertura del seguro de ACCIDENTES PERSONALES así como la ASISTENCIA MÉDICA TELEFÓNICA, entrarán en vigor en un lapso de diez días hábiles.<br>
 				Tu número de Póliza es: ". self::POLIZA." y tu número de certificado es: ".$certificado."<br>
 				Tu número de orden es: ". $idTransaccion."<br>
-						¡GRACIAS!<br>";
+						¡GRACIAS!<br>
+				Correo de modo de desarrollo";
 		$this->enviarEmail($asunto, $mensaje, $email, $pdf);
 	}
 	
@@ -69,13 +70,13 @@ class Producto {
 								</tr>
 							</table>
 ";
-		$this->enviarEmail("Venta Realizada", $mensajeAdmin, "vagmx2017@gmail.com", $pdf);
+		$this->enviarEmail("Venta Realizada Dev", $mensajeAdmin, "vagmx2017@gmail.com", $pdf);
 	}
 		
 	
 	function generarOrdenOXXOMedica365($nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado) {
 		$destino = $email;
-		$asunto = "Orden de Pago Medica365";
+		$asunto = "Orden de Pago Medica365 DEV";
 		$emailAdmin = "vagmx2017@gmail.com";
 		
 		$orden = Pago::generarOrdenOXXO($nombre, $email, $celular, self::MEDICA365_PRECIO, 'Tarjeta Medica365', 'Tarjeta de Seguros de Gastos Medicos');
@@ -158,7 +159,7 @@ class Producto {
 	
 	function construirPDFMedica($certificado, $nombre, $vigencia) {
 		try {
-			$border = 0;
+			$border = 1;
 			$pdf = new FPDI();
 			$pdf->AddPage();
 			$pdf->setSourceFile(dirname ( __FILE__ ) . "/../../recursos/documentos/bienvenida-medica365.pdf");

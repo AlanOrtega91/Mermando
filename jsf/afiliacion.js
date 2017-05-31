@@ -1,6 +1,6 @@
 (function ($){
   jQuery("document").ready(function(){
-	  var baseAPI = "http://vag.mx/api/interfaz/";
+	  var baseAPI = "http://vag.mx/api/dev/interfaz/";
 	  
 	  $('#forma').submit(function afiliarse(event){
 
@@ -13,7 +13,8 @@
 		  var numeroOrden = $('#orden-compra').val();
 		  
 		  if (contraseña != contraseña2) {
-			  mostrarError("Contraseñas no coinciden");
+			  $('#mensaje-error').text('Contraseñas no coinciden');
+			  $('#mensaje-error').show('slow');
 			  return;
 		  }
 		  
@@ -25,21 +26,19 @@
 	  var afiliacionRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	mostrarError();
+	        	$('#afiliarse').hide("slow");
+	        	$('#mensaje-exito').show("slow");
+	        	$('#mensaje-fracaso').hide();
 	        } else{
-	        	if(datos.clave == "email") {	
-	        		mostrarError("El email ya esta siendo usado en otra cuenta");
-	        	} else if(datos.clave == "orden") {	
-	        		mostrarError("El numero de orden es invalido");
-	        	} else {
-	        		mostrarError("Error al registrar la cuenta. Intentalo mas tarde");
+	        	if(datos.clave == "") {
+	        		mostrarError('Error');
 	        	}
 	        }
 	  }
 	  
 	  var afiliacionError = function (datos) {
 		  console.log(datos);
-		  mostrarError('Error de Servidor intentalo mas tarde');
+		  mostrarError("Error");
 	  }
 	  
 	  function mostrarExito(){

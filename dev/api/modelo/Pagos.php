@@ -3,7 +3,7 @@ require_once dirname ( __FILE__ ) . "/../../recursos/conekta-php/lib/Conekta.php
 
 class Pago {
 	
-	const KEY = "key_D6HkDtvghhq8PdAxJ8uLAg";
+	const KEY = "key_dn1ykZGtpAqDYnaJnAyNUA";
 	
 	public static function crearUsuario($token, $nombre, $celular, $email) {
 		\Conekta\Conekta::setApiKey(self::KEY);

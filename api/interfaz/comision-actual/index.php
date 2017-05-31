@@ -12,9 +12,9 @@ if (!isset($_POST['token'])) {
 		$token = SafeString::safe($_POST['token']);
 		
 		$asociado = new Asociado();
-		$comision = $asociado->leerComisionActual($token);
+		$informacion = $asociado->leerComisionActual($token);
 		
-		echo json_encode(array("status"=>"ok","comision"=>$comision));
+		echo json_encode(array("status"=>"ok","info"=>$informacion));
 		
 	} catch(errorConBaseDeDatos $e) {
 		echo json_encode(array("status"=>"error","clave"=>"db = ".$e->getMessage()));

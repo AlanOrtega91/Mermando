@@ -12,11 +12,8 @@ class AsociadoDB extends BaseDeDatos {
  	const CREAR_SESION= "INSERT INTO Sesion_Asociado (email, token ,fecha)
  			VALUES ('%s', '%s','%s')";
  	const USAR_ORDEN_REGISTRO = "UPDATE Orden SET usadoParaRegistro = 1 WHERE idTransaccion = '%s'";
- 	const LEER_CUENTA = "SELECT Asociado.nombre AS nombre, Asociado.email AS email, Asociado.id AS clave FROM Sesion_Asociado 
-							LEFT JOIN Asociado ON Sesion_Asociado.email = Asociado.email WHERE token = '%s'";
- 	const LEER_COMISIONES= "SELECT * FROM Asociado WHERE email = '%s'";
- 	const LEER_PAGOS_TOTALES= "SELECT SUM(cantidad) FROM Sesion_Asociado LEFT JOIN Asociado ON Sesion_Asociado.email = Asociado.email LEFT JOIN PagoDeComision ON Asociado.id = PagoDeComision.idAsociado WHERE email = '%s'";
- 	
+ 	const LEER_CUENTA = "SELECT Asociado.nombre AS nombre, Asociado.email AS email, Asociado.id AS id FROM Sesion_Asociado 
+							LEFT JOIN Asociado ON Sesion_Asociado.idAsociado = Asociado.id WHERE token = '%s'";
  	function existeAsociado($asociado){
  		$query = sprintf(self::BUSCAR_ASOCIADO, $asociado);
  		$resultado = $this->ejecutarQuery($query);
@@ -62,20 +59,6 @@ class AsociadoDB extends BaseDeDatos {
  		$query = sprintf(self::LEER_CUENTA, $token);
  		$resultado = $this->ejecutarQuery($query);
  		return $resultado->fetch_assoc();
- 	}
- 	
- 	function comisionesTotales($token) {
- 		$query = sprintf(self::LEER_COMISIONES, $token);
- 		$resultado = $this->ejecutarQuery($query);
- 		//return $resultado->fetch_row();
- 		return [567];
- 	}
- 	
- 	function comisionesPagadasTotales($token) {
- 		$query = sprintf(self::LEER_PAGOS_TOTALES, $token);
- 		$resultado = $this->ejecutarQuery($query);
- 		//return $resultado->fetch_row();
- 		return [400];
  	}
 }
 ?>

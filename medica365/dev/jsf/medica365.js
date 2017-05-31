@@ -1,7 +1,7 @@
 (function ($){
   jQuery("document").ready(function(){
 	  
-	  var baseAPI = "https://medica365.vag.mx/api/dev/interfaz/";
+	  var baseAPI = "https://medica365.vag.mx/dev/api/interfaz/";
 	  var sending = false;
 	  var TARJETA = 1;
 	  var OXXO = 2;

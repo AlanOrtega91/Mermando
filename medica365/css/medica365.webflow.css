@@ -629,6 +629,32 @@ p {
   padding-left: 10px;
 }
 
+.metodos-de-pago {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.metodo-de-pago {
+  margin-right: 15px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, .27);
+}
+
+.html-embed {
+  display: none;
+}
+
+.image-2 {
+  display: none;
+}
+
 html.w-mod-js *[data-ix="fade-in-on-load"] {
   opacity: 0;
   -webkit-transform: translate(0px, 24px);

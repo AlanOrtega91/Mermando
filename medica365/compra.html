@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--  This site was created in Webflow. http://www.webflow.com -->
-<!--  Last Published: Wed May 24 2017 00:33:32 GMT+0000 (UTC)  -->
+<!--  Last Published: Thu May 25 2017 19:50:01 GMT+0000 (UTC)  -->
 <html data-wf-page="58ab5a2d24cb6c757b30ff06" data-wf-site="58911ac7b961c9956c76788c">
 <head>
   <meta charset="utf-8">
@@ -38,10 +38,160 @@
       </div>
     </div>
   </div>
-  <div class="section" id="compra_block">
+  <div class="section" id="compra_block"><img class="image-2" src="images/oxxopay_brand.png">
     <div class="compra-container w-container">
+      <div>
+        <div class="html-embed w-embed" id="recibo-oxxo">
+          <html>
+          <head>
+            <style>
+              /* Reset -------------------------------------------------------------------- */
+              * 	 { margin: 0;padding: 0; }
+              body { font-size: 14px; }
+              /* OPPS --------------------------------------------------------------------- */
+              h3 {
+              	margin-bottom: 10px;
+              	font-size: 15px;
+              	font-weight: 600;
+              	text-transform: uppercase;
+              }
+              .opps {
+              	width: 496px; 
+              	border-radius: 4px;
+              	box-sizing: border-box;
+              	padding: 0 45px;
+              	margin: 40px auto;
+              	overflow: hidden;
+              	border: 1px solid #b0afb5;
+              	font-family: 'Open Sans', sans-serif;
+              	color: #4f5365;
+              }
+              .opps-reminder {
+              	position: relative;
+              	top: -1px;
+              	padding: 9px 0 10px;
+              	font-size: 11px;
+              	text-transform: uppercase;
+              	text-align: center;
+              	color: #ffffff;
+              	background: #000000;
+              }
+              .opps-info {
+              	margin-top: 26px;
+              	position: relative;
+              }
+              .opps-info:after {
+              	visibility: hidden;
+                   display: block;
+                   font-size: 0;
+                   content: ' ';
+                   clear: both;
+                   height: 0;
+              }
+              .opps-brand {
+              	width: 45%;
+              	float: left;
+              }
+              .opps-brand img {
+              	max-width: 150px;
+              	margin-top: 2px;
+              }
+              .opps-ammount {
+              	width: 55%;
+              	float: right;
+              }
+              .opps-ammount h2 {
+              	font-size: 36px;
+              	color: #000000;
+              	line-height: 24px;
+              	margin-bottom: 15px;
+              }
+              .opps-ammount h2 sup {
+              	font-size: 16px;
+              	position: relative;
+              	top: -2px
+              }
+              .opps-ammount p {
+              	font-size: 10px;
+              	line-height: 14px;
+              }
+              .opps-reference {
+              	margin-top: 14px;
+              }
+              h1 {
+              	font-size: 27px;
+              	color: #000000;
+              	text-align: center;
+              	margin-top: -1px;
+              	padding: 6px 0 7px;
+              	border: 1px solid #b0afb5;
+              	border-radius: 4px;
+              	background: #f8f9fa;
+              }
+              .opps-instructions {
+              	margin: 32px -45px 0;
+              	padding: 32px 45px 45px;
+              	border-top: 1px solid #b0afb5;
+              	background: #f8f9fa;
+              }
+              ol {
+              	margin: 17px 0 0 16px;
+              }
+              li + li {
+              	margin-top: 10px;
+              	color: #000000;
+              }
+              a {
+              	color: #1155cc;
+              }
+              .opps-footnote {
+              	margin-top: 22px;
+              	padding: 22px 20 24px;
+              	color: #108f30;
+              	text-align: center;
+              	border: 1px solid #108f30;
+              	border-radius: 4px;
+              	background: #ffffff;
+              }
+            </style>
+            <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+          </head>
+          <body>
+            <div class="opps">
+              <div class="opps-header">
+                <div class="opps-reminder">Ficha digital. No es necesario imprimir.</div>
+                <div class="opps-info">
+                  <div class="opps-brand"><img src="images/oxxopay_brand.png" alt="OXXOPay">
+                  </div>
+                  <div class="opps-ammount">
+                    <h3>Monto a pagar</h3>
+                    <h2 id="recibo-oxxo-precio"> </h2>
+                    <p>OXXO cobrará una comisión adicional al momento de realizar el pago.</p>
+                  </div>
+                </div>
+                <div class="opps-reference">
+                  <h3>Referencia</h3>
+                  <h1 id="recibo-oxxo-referencia"> </h1>
+                </div>
+              </div>
+              <div class="opps-instructions">
+                <h3>Instrucciones</h3>
+                <ol>
+                  <li>Acude a la tienda OXXO más cercana. <a href="https://www.google.com.mx/maps/search/oxxo/" target="_blank">Encuéntrala aquí</a>.</li>
+                  <li>Indica en caja que quieres ralizar un pago de <strong>OXXOPay</strong>.</li>
+                  <li>Dicta al cajero el número de referencia en esta ficha para que tecleé directamete en la pantalla de venta.</li>
+                  <li>Realiza el pago correspondiente con dinero en efectivo.</li>
+                  <li>Al confirmar tu pago, el cajero te entregará un comprobante impreso. <strong>En el podrás verificar que se haya realizado correctamente.</strong> Conserva este comprobante de pago.</li>
+                </ol>
+                <div class="opps-footnote">Al completar estos pasos recibirás un correo de <strong>VAG</strong> confirmando tu pago.</div>
+              </div>
+            </div>
+          </body>
+          </html>
+        </div>
+      </div>
       <div class="w-form">
-        <form action="javascript:void(0);" data-name="Datos Personales" id="forma" method="post" name="wf-form-Datos-Personales">
+        <form action="javascript:void(0);" data-name="Datos Personales" id="forma" method="post" name="wf-form-Datos-Personales" novalidate="#">
           <label for="nombre">Nombre</label>
           <input class="w-input" data-name="nombre" id="nombre" maxlength="256" name="nombre" required="required" type="text">
           <label for="ocupacion">Ocupación</label>
@@ -58,57 +208,65 @@
           <input class="w-input" data-name="beneficiario" id="beneficiario" maxlength="256" name="beneficiario" required="required" type="text">
           <label for="clave-asociado">Clave del asociado</label>
           <input class="w-input" data-name="clave asociado" id="clave-asociado" maxlength="256" name="clave-asociado" type="text">
-          <label class="field-label" for="email-10">Datos de Tarjeta</label>
-          <div class="w-row">
-            <div class="w-col w-col-6">
-              <label for="nombre-tarjeta">Nombre del Tarjetahabiente</label>
-              <input class="w-input" data-name="nombre tarjeta" id="nombre-tarjeta" maxlength="256" name="nombre-tarjeta" required="required" type="text">
-              <label for="numero-tarjeta">Número de Tarjeta</label>
-              <input class="w-input" data-name="numero tarjeta" id="numero-tarjeta" maxlength="16" name="numero-tarjeta" placeholder="16 dígitos " required="required" type="text">
-            </div>
-            <div class="w-col w-col-6">
-              <div class="w-row">
-                <div class="w-col w-col-6">
-                  <div class="date-column">
-                    <label for="mes-tarjeta">Mes de Vencimiento</label>
-                    <select class="w-select" data-name="mes tarjeta" id="mes-tarjeta" name="mes-tarjeta" required="required">
-                      <option value="-1"></option>
-                      <option value="1">01</option>
-                      <option value="2">02</option>
-                      <option value="3">03</option>
-                      <option value="04">04</option>
-                      <option value="05">05</option>
-                      <option value="06">06</option>
-                      <option value="07">07</option>
-                      <option value="08">08</option>
-                      <option value="09">09</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="w-col w-col-6">
-                  <div class="date-column">
-                    <label for="anio-tarjeta">Año de Vencimiento</label>
-                    <select class="w-select" data-name="anio tarjeta" id="anio-tarjeta" name="anio-tarjeta" required="required">
-                      <option value="-1"></option>
-                      <option value="17">2017</option>
-                      <option value="18">2018</option>
-                      <option value="19">2019</option>
-                      <option value="20">2020</option>
-                      <option value="21">2021</option>
-                      <option value="22">2022</option>
-                      <option value="23">2023</option>
-                      <option value="24">2024</option>
-                      <option value="25">2025</option>
-                    </select>
-                  </div>
-                </div>
+          <div class="metodos-de-pago">
+            <a class="w-inline-block" href="#" id="metodo-pago-tarjeta"><img class="metodo-de-pago" height="42" src="images/metodos_pago.png" width="225">
+            </a>
+            <a class="w-inline-block" href="#" id="metodo-pago-oxxo"><img class="metodo-de-pago" height="42" src="images/methods_oxxopay.png" width="166">
+            </a>
+          </div>
+          <div id="tarjeta-info">
+            <label class="field-label" for="email-10">Datos de Tarjeta</label>
+            <div class="w-row">
+              <div class="w-col w-col-6">
+                <label for="nombre-tarjeta">Nombre del Tarjetahabiente</label>
+                <input class="w-input" data-name="nombre tarjeta" id="nombre-tarjeta" maxlength="256" name="nombre-tarjeta" type="text">
+                <label for="numero-tarjeta">Número de Tarjeta</label>
+                <input class="w-input" data-name="numero tarjeta" id="numero-tarjeta" maxlength="16" name="numero-tarjeta" placeholder="16 dígitos " type="text">
               </div>
-              <div>
-                <label for="cvv-tarjeta">Código de Seguridad (CVV)</label>
-                <input class="cvv-input w-input" data-name="Cvv Tarjeta 2" id="cvv-tarjeta" maxlength="4" name="cvv-tarjeta-2" required="required" type="password">
+              <div class="w-col w-col-6">
+                <div class="w-row">
+                  <div class="w-col w-col-6">
+                    <div class="date-column">
+                      <label for="mes-tarjeta">Mes de Vencimiento</label>
+                      <select class="w-select" data-name="mes tarjeta" id="mes-tarjeta" name="mes-tarjeta">
+                        <option value="-1"></option>
+                        <option value="1">01</option>
+                        <option value="2">02</option>
+                        <option value="3">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="w-col w-col-6">
+                    <div class="date-column">
+                      <label for="anio-tarjeta">Año de Vencimiento</label>
+                      <select class="w-select" data-name="anio tarjeta" id="anio-tarjeta" name="anio-tarjeta">
+                        <option value="-1"></option>
+                        <option value="17">2017</option>
+                        <option value="18">2018</option>
+                        <option value="19">2019</option>
+                        <option value="20">2020</option>
+                        <option value="21">2021</option>
+                        <option value="22">2022</option>
+                        <option value="23">2023</option>
+                        <option value="24">2024</option>
+                        <option value="25">2025</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label for="cvv-tarjeta">Código de Seguridad (CVV)</label>
+                  <input class="cvv-input w-input" data-name="Cvv Tarjeta 2" id="cvv-tarjeta" maxlength="4" name="cvv-tarjeta-2" type="password">
+                </div>
               </div>
             </div>
           </div>

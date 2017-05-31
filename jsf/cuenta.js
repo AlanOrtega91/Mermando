@@ -1,6 +1,6 @@
 (function ($){
   jQuery("document").ready(function(){
-	  var baseAPI = "http://vag.mx/api/interfaz/";
+	  var baseAPI = "http://vag.mx/api/dev/interfaz/";
 	  var direccionCuenta = baseAPI + "cuenta/";
 	  var token = leerToken();
 	  var parametrosCuenta = {token: token};
@@ -8,22 +8,20 @@
 	  var leerCuentaRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	$('#cuenta-nombre').text(datos.info.nombre + " (" + datos.info.clave + ")");
+	        	$('#cuenta-nombre').text(datos.info.nombre);
 	        	$('#cuenta-email').html(datos.info.email);
 	        } else{
 	        	if(datos.clave == "email") {	
-	        		mostrarError("El email ya esta siendo usado en otra cuenta");
-	        	} else if(datos.clave == "orden") {	
-	        		mostrarError("El numero de orden es invalido");
+	        		mostrarError("El email no existe");
 	        	} else {
-	        		mostrarError("Error al registrar la cuenta. Intentalo mas tarde");
+	        		mostrarError("Error al leer");
 	        	}
 	        }
 	  }
 	  
 	  var leerCuentaError = function (datos) {
 		  console.log(datos);
-		  mostrarError('Error de Servidor intentalo mas tarde');
+		  mostrarError("Error con el servidor");
 	  }
 	  
 	  $.post(direccionCuenta,parametrosCuenta, leerCuentaRespondio,"json").fail(leerCuentaError);
@@ -36,21 +34,20 @@
 	  var leerComisionRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	$('#cuenta-comisiones').html("$" + datos.comision);
+	        	$('#cuenta-nombre').text(datos.info.nombre);
+	        	$('#cuenta-email').html(datos.info.email);
 	        } else{
 	        	if(datos.clave == "email") {	
-	        		mostrarError("El email ya esta siendo usado en otra cuenta");
-	        	} else if(datos.clave == "orden") {	
-	        		mostrarError("El numero de orden es invalido");
+	        		mostrarError("El email no existe");
 	        	} else {
-	        		mostrarError("Error al registrar la cuenta. Intentalo mas tarde");
+	        		mostrarError("Error al leer");
 	        	}
 	        }
 	  }
 	  
 	  var leerComisionError = function (datos) {
 		  console.log(datos);
-		  mostrarError('Error de Servidor intentalo mas tarde');
+		  mostrarError("Error con el servidor");
 	  }
 	  
 	  $.post(direccionComision,parametrosComision, leerComisionRespondio,"json").fail(leerComisionError);

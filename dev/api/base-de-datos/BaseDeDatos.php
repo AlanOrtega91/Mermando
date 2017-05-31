@@ -4,7 +4,7 @@ abstract class BaseDeDatos{
  	const DB_LINK = '127.0.0.1';
  	const DB_LOGIN = 'vagmx_VagDB';
  	const DB_PASSWORD ='v5gUserDB!';
- 	const DB_NAME = 'vagmx_main';
+ 	const DB_NAME = 'vagmx_Dev';
  	
  	var $mysqli;
  	

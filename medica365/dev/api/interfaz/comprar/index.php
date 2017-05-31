@@ -1,5 +1,5 @@
 <?php
-$pathAPI = dirname(__FILE__)."/../../../../api/";
+$pathAPI = dirname(__FILE__)."/../../../../../dev/api/";
 require_once $pathAPI. "modelo/SafeString.php";
 require_once $pathAPI. "modelo/Producto.php";
 
