@@ -1,6 +1,6 @@
 (function ($){
   jQuery("document").ready(function(){
-	  var baseAPI = "http://vag.mx/api/dev/interfaz/";
+	  var baseAPI = "http://vag.mx/dev/api/interfaz/";
 	  
 	  $('#forma').submit(function afiliarse(event){
 
@@ -22,13 +22,16 @@
 	        	window.location.replace("http://vag.mx/dev/cuenta/cuenta.html");
 	        } else{
 	        	if(datos.clave == "email") {	
-	        		mostrarError("El email no existe");
+	        		mostrarError("El email o la contraseña son incorrectos");
+	        	} else {
+	        		mostrarError("Error con el servidor. Intentalo mas tarde");
 	        	}
 	        }
 	  }
 	  
 	  var inicioSesionError = function (datos) {
 		  console.log(datos);
+		  mostrarError("Error con el servidor. Intentalo mas tarde");
 	  }
 	  
 	  function guardarToken(token){

@@ -77,7 +77,7 @@ class Asociado {
 	function iniciarSesion($email, $contraseña) {
 		
 		if (!$this->dataBase->existeEmail($email)) {
-			throw new errorEmailNoExoste();
+			throw new errorEmailNoExiste();
 		}
 		if (!$this->dataBase->clavesCoinciden($email, $contraseña)){
 			throw new errorClavesNoCoinciden();
@@ -92,12 +92,38 @@ class Asociado {
 	}
 	
 	function leerComisionActual($token) {
+		date_default_timezone_set ( 'America/Mexico_City' );
+		$fecha = date ( "Y-m-d");
+		$asociado = $this->leerCuenta($token);
+		$ventaslvl0Lista = $this->ventaslvl0($asociado['id'],'2017-01-01',$fecha);		
+		$comisionTotallvl0 = count($ventaslvl0Lista) * 50;
 		
+		
+		$numeroDeVentasNiveles = $this->ventasNiveles($asociado['id'], '2017-01-01', $fecha);
+		$comisionTotalNiveles = $numeroDeVentasNiveles * 10;
+		
+		
+		$pagoDeComisionesTotales = $this->dataBase->pagoDeComisionesTotales($token)['cantidad'];
+		
+		//echo $comisionTotallvl0.'---'.$comisionTotalNiveles.'---'.$pagoDeComisionesTotales;
+		
+		return $comisionTotallvl0 + $comisionTotalNiveles - $pagoDeComisionesTotales;
+	}
+	
+	function ventaslvl0($id, $fechaInicio, $fechaFin)
+	{
+		$ventaslvl0 = $this->dataBase->ventasTotaleslvl0($id, $fechaInicio, $fechaFin);
+		for ($ventaslvl0Lista = array(); $fila = $ventaslvl0->fetch_assoc(); $ventaslvl0Lista[] = $fila);
+		return $ventaslvl0Lista;
+	}
+	
+	function ventasNiveles($id, $fechaInicio, $fechaFin)
+	{
+		$ventasNiveles = $this->dataBase->numeroVentasTotalesNiveles($id, $fechaInicio, $fechaFin);
+		return $ventasNiveles['numeroDeVentas'];
 	}
 }
 
-class errorSendingMailException extends Exception{
-}
 class errorEmailUsado extends Exception{
 }
 class errorOrdenUsada extends Exception{

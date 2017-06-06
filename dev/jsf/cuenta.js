@@ -1,6 +1,6 @@
 (function ($){
   jQuery("document").ready(function(){
-	  var baseAPI = "http://vag.mx/api/dev/interfaz/";
+	  var baseAPI = "http://vag.mx/dev/api/interfaz/";
 	  var direccionCuenta = baseAPI + "cuenta/";
 	  var token = leerToken();
 	  var parametrosCuenta = {token: token};
@@ -8,14 +8,10 @@
 	  var leerCuentaRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	$('#cuenta-nombre').text(datos.info.nombre);
+	        	$('#cuenta-nombre').text(datos.info.nombre + ' (' + datos.info.id + ')');
 	        	$('#cuenta-email').html(datos.info.email);
 	        } else{
-	        	if(datos.clave == "email") {	
-	        		mostrarError("El email no existe");
-	        	} else {
-	        		mostrarError("Error al leer");
-	        	}
+
 	        }
 	  }
 	  
@@ -34,14 +30,9 @@
 	  var leerComisionRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	$('#cuenta-nombre').text(datos.info.nombre);
-	        	$('#cuenta-email').html(datos.info.email);
+	        	$('#cuenta-comisiones').html("$ " + datos.comision);
 	        } else{
-	        	if(datos.clave == "email") {	
-	        		mostrarError("El email no existe");
-	        	} else {
-	        		mostrarError("Error al leer");
-	        	}
+
 	        }
 	  }
 	  
@@ -80,14 +71,6 @@
 		    }
 		    return "";
 		}
-	  
-	  function mostrarExito(){
-		  
-	  }
-	  
-	  function mostrarError(error){
-		  
-	  }
 	  
   });
 })(jQuery);

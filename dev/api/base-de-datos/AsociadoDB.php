@@ -13,7 +13,53 @@ class AsociadoDB extends BaseDeDatos {
  			VALUES ('%s', '%s','%s')";
  	const USAR_ORDEN_REGISTRO = "UPDATE Orden SET usadoParaRegistro = 1 WHERE idTransaccion = '%s'";
  	const LEER_CUENTA = "SELECT Asociado.nombre AS nombre, Asociado.email AS email, Asociado.id AS id FROM Sesion_Asociado 
-							LEFT JOIN Asociado ON Sesion_Asociado.idAsociado = Asociado.id WHERE token = '%s'";
+							LEFT JOIN Asociado ON Sesion_Asociado.email = Asociado.email WHERE token = '%s'";
+ 	const VENTAS_TOTALES_LVL0 = "SELECT BeneficiarioMedica365.nombre AS nombreBeneficiario, Producto.costo AS costo, Producto.nombre AS nombreProducto, Orden.fecha AS fecha 
+			FROM Orden 
+			LEFT JOIN Producto
+			ON Producto.id = Orden.idProducto
+			LEFT JOIN BeneficiarioMedica365
+			ON BeneficiarioMedica365.certificado = Orden.certificado
+			WHERE Orden.idAsociado = '%s' 
+			AND Orden.certificado IS NOT NULL 
+			AND Orden.fecha >= '%s' AND Orden.fecha <= '%s'";
+ 	
+ 	const PAGO_DE_COMISIONES_TOTALES = "SELECT SUM(cantidad) AS cantidad FROM Sesion_Asociado 
+			LEFT JOIN Asociado 
+			ON Sesion_Asociado.email = Asociado.email 
+			LEFT JOIN PagoDeComision 
+			ON PagoDeComision.idAsociado = Asociado.id 
+			WHERE token = '%s'";
+ 	
+ 	const VENTAS_TOTALES_NIVELES = "SELECT COUNT(Orden.id) AS numeroDeVentas FROM Asociado
+		 	LEFT JOIN Referenciado 
+			ON Asociado.id = Referenciado.idPrimario
+		 	LEFT JOIN Asociado AS lvl1
+		 	ON Referenciado.idSecundario = lvl1.id
+		 	
+		 	LEFT JOIN Referenciado AS rlvl1 
+			ON lvl1.id = rlvl1.idPrimario
+		 	LEFT JOIN Asociado AS lvl2
+		 	ON rlvl1.idSecundario = lvl2.id
+		 	
+		 	LEFT JOIN Referenciado AS rlvl2 
+			ON lvl2.id = rlvl2.idPrimario
+		 	LEFT JOIN Asociado AS lvl3
+		 	ON rlvl2.idSecundario = lvl3.id
+		 	
+		 	LEFT JOIN Referenciado AS rlvl3 
+			ON lvl3.id = rlvl3.idPrimario
+		 	LEFT JOIN Asociado AS lvl4
+		 	ON rlvl3.idSecundario = lvl4.id
+		 	
+		 	LEFT JOIN Orden
+		 	ON lvl1.id = Orden.idAsociado
+		 	OR lvl2.id = Orden.idAsociado
+		 	OR lvl3.id = Orden.idAsociado
+		 	OR lvl4.id = Orden.idAsociado
+		 	
+		 	WHERE Asociado.id = '%s' AND Orden.certificado IS NOT NULL ";
+ 	
  	function existeAsociado($asociado){
  		$query = sprintf(self::BUSCAR_ASOCIADO, $asociado);
  		$resultado = $this->ejecutarQuery($query);
@@ -57,6 +103,28 @@ class AsociadoDB extends BaseDeDatos {
  	
  	function leerCuenta($token) {
  		$query = sprintf(self::LEER_CUENTA, $token);
+ 		$resultado = $this->ejecutarQuery($query);
+ 		return $resultado->fetch_assoc();
+ 	}
+ 	
+ 	function ventasTotaleslvl0($idAsociado, $fechaInicio, $fechaFin)
+ 	{
+ 		$query = sprintf(self::VENTAS_TOTALES_LVL0, $idAsociado, $fechaInicio, $fechaFin);
+ 		$resultado = $this->ejecutarQuery($query);
+ 		return $resultado;
+ 	}
+ 	
+ 	function numeroVentasTotalesNiveles($idAsociado, $fechaInicio, $fechaFin)
+ 	{
+ 		$query = sprintf(self::VENTAS_TOTALES_NIVELES, $idAsociado, $fechaInicio, $fechaFin);
+ 		$resultado = $this->ejecutarQuery($query);
+ 		return $resultado->fetch_assoc();
+ 	}
+ 	
+ 	
+ 	function pagoDeComisionesTotales($token)
+ 	{
+ 		$query = sprintf(self::PAGO_DE_COMISIONES_TOTALES, $token);
  		$resultado = $this->ejecutarQuery($query);
  		return $resultado->fetch_assoc();
  	}
