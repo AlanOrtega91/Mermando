@@ -19,12 +19,12 @@ if (!isset($_POST['email']) || !isset($_POST['contrasenia'])) {
 		echo json_encode(array("status"=>"ok","token"=>$token));
 		
 	} catch(errorConBaseDeDatos$e) {
-		echo json_encode(array("status"=>"error","clave"=>"db = ".$e->getMessage()));
+		echo json_encode(array("status"=>"error","clave"=>"db","explicacion"=>$e->getMessage()));
 	} catch(errorEmailNoExiste $e) {
 		echo json_encode(array("status"=>"error","clave"=>"email"));
 	} catch(errorClavesNoCoinciden $e) {
 		echo json_encode(array("status"=>"error","clave"=>"claves"));
 	} catch (Exception $e) {
- 		echo json_encode(array("status"=>"error","clave"=>"desconocido"));
+		echo json_encode(array("status"=>"error","clave"=>"desconocido","explicacion"=>$e->getMessage()));
  	}
 ?>

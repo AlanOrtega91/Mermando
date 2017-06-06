@@ -20,14 +20,18 @@ class Asociado {
 		}
 		
 		$this->dataBase->nuevoAsociado($nombre, $email, $contraseña);
+		$idNuevoAsociado = $this->dataBase->mysqli->insert_id;
+		
 		$this->dataBase->usarOrdenEnRegistro($orden);
 		
-		//$asunto = "¡Bienvenido a Mermando!";
-		//$mensaje = "";
-		//$this->enviarCorreo($asunto, $mensaje, $mail);
+		$idAsociado = $this->dataBase->buscarIdAsociado($orden)['idAsociado'];
+		$this->dataBase->referenciaAsociado($idAsociado, $idNuevoAsociado);
+		$asunto = "¡Bienvenido a Vag!";
+		$mensaje = "Bienvenido tu numero de usuario es: ".$idNuevoAsociado;
+		$this->enviarEmail($asunto, $mensaje, $email);
 	}
 	
-	function enviarEmail($asunto,$mensaje,$destino, $attach){
+	function enviarEmail($asunto,$mensaje,$destino){
 		
 		//SMTP needs accurate times, and the PHP time zone MUST be set
 		//This should be done in your php.ini, but this is how to do it if you don't have access to that
@@ -58,16 +62,15 @@ class Asociado {
 		$mail->Subject = $asunto;
 		$mail->Body    = $mensaje;
 		
-		$mail->setFrom('ventas@vag.mx', 'Medica365');
+		$mail->setFrom('ventas@vag.mx', 'Vag');
 		$mail->addAddress($destino);						// Name is optional
 		
-		$mail->addAttachment($attach, 'Certificado Medica365', $encoding = 'base64', $type = 'application/pdf');	  // Add attachments
 		$mail->isHTML(true);                                // Set email format to HTML
 		
 		
 		
 		if(!$mail->send()) {
-			//echo 'Mailer Error: ' . $mail->ErrorInfo;
+			echo 'Mailer Error: ' . $mail->ErrorInfo;
 		} else {
 			//echo "enviado";
 		}
@@ -121,6 +124,21 @@ class Asociado {
 	{
 		$ventasNiveles = $this->dataBase->numeroVentasTotalesNiveles($id, $fechaInicio, $fechaFin);
 		return $ventasNiveles['numeroDeVentas'];
+	}
+	
+	function cambiarDatosCuenta($token, $email, $nombre)
+	{
+		$idAsociado = $this->leerCuenta($token)['id'];
+		$this->dataBase->cambiarDatosCuenta($idAsociado, $email, $nombre);
+	}
+	
+	function cambiarDatosContrasena($token, $contraseña, $contraseñaNueva)
+	{
+		$asociado = $this->leerCuenta($token);
+		if (!$this->dataBase->clavesCoinciden($asociado['email'], $contraseña)){
+			throw new errorClavesNoCoinciden();
+		}
+		$this->dataBase->cambiarDatosContrasena($asociado['id'], $contraseña, $contraseñaNueva);
 	}
 }
 
