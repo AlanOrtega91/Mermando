@@ -12,7 +12,8 @@ if (!isset($_POST['token'])) {
 		$token = SafeString::safe($_POST['token']);
 		
 		$asociado = new Asociado();
-		$comisionADeber = $asociado->leerComisionActual($token);
+		$idAsociado = $asociado->leerCuenta($token)['id'];
+		$comisionADeber = $asociado->leerComisionActual($idAsociado);
 		
 		echo json_encode(array("status"=>"ok","comision"=>$comisionADeber));
 		

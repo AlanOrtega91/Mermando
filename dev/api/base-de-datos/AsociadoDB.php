@@ -27,12 +27,10 @@ class AsociadoDB extends BaseDeDatos {
 			AND Orden.certificado IS NOT NULL 
 			AND Orden.fecha >= '%s' AND Orden.fecha <= '%s'";
  	
- 	const PAGO_DE_COMISIONES_TOTALES = "SELECT SUM(cantidad) AS cantidad FROM Sesion_Asociado 
-			LEFT JOIN Asociado 
-			ON Sesion_Asociado.email = Asociado.email 
+ 	const PAGO_DE_COMISIONES_TOTALES = "SELECT SUM(cantidad) AS cantidad FROM Asociado 
 			LEFT JOIN PagoDeComision 
 			ON PagoDeComision.idAsociado = Asociado.id 
-			WHERE token = '%s'";
+			WHERE Asociado.id = '%s'";
  	
  	const VENTAS_TOTALES_NIVELES = "SELECT COUNT(Orden.id) AS numeroDeVentas FROM Asociado
 		 	LEFT JOIN Referenciado 
@@ -141,9 +139,9 @@ class AsociadoDB extends BaseDeDatos {
  	}
  	
  	
- 	function pagoDeComisionesTotales($token)
+ 	function pagoDeComisionesTotales($id)
  	{
- 		$query = sprintf(self::PAGO_DE_COMISIONES_TOTALES, $token);
+ 		$query = sprintf(self::PAGO_DE_COMISIONES_TOTALES, $id);
  		$resultado = $this->ejecutarQuery($query);
  		return $resultado->fetch_assoc();
  	}

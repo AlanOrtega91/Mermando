@@ -396,7 +396,6 @@
   var tram = require$$0$1 && $.tram;
   var domready = false;
   var destroyed = false;
-  var Modernizr = window.Modernizr;
   tram.config.hideBackface = false;
   tram.config.keepInherited = true;
 
@@ -501,7 +500,7 @@
   var appVersion = navigator.appVersion.toLowerCase();
   var touch = Webflow.env.touch = ('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch;
   var chrome = Webflow.env.chrome = /chrome/.test(userAgent) && /Google/.test(navigator.vendor) && parseInt(appVersion.match(/chrome\/(\d+)\./)[1], 10);
-  var ios = Webflow.env.ios = Modernizr && Modernizr.ios;
+  var ios = Webflow.env.ios = /(ipod|iphone|ipad)/.test(userAgent);
   Webflow.env.safari = /safari/.test(userAgent) && !chrome && !ios;
 
   // Maintain current touch target to prevent late clicks on touch devices

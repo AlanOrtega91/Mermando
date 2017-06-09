@@ -20,14 +20,18 @@ class Asociado {
 		}
 		
 		$this->dataBase->nuevoAsociado($nombre, $email, $contraseña);
+		$idNuevoAsociado = $this->dataBase->mysqli->insert_id;
+		
 		$this->dataBase->usarOrdenEnRegistro($orden);
 		
-		//$asunto = "¡Bienvenido a Mermando!";
-		//$mensaje = "";
-		//$this->enviarCorreo($asunto, $mensaje, $mail);
+		$idAsociado = $this->dataBase->buscarIdAsociado($orden)['idAsociado'];
+		$this->dataBase->referenciaAsociado($idAsociado, $idNuevoAsociado);
+		$asunto = "¡Bienvenido a Vag!";
+		$mensaje = "Bienvenido tu numero de usuario es: ".$idNuevoAsociado;
+		$this->enviarEmail($asunto, $mensaje, $email);
 	}
 	
-	function enviarEmail($asunto,$mensaje,$destino, $attach){
+	function enviarEmail($asunto,$mensaje,$destino){
 		
 		//SMTP needs accurate times, and the PHP time zone MUST be set
 		//This should be done in your php.ini, but this is how to do it if you don't have access to that
@@ -58,16 +62,15 @@ class Asociado {
 		$mail->Subject = $asunto;
 		$mail->Body    = $mensaje;
 		
-		$mail->setFrom('ventas@vag.mx', 'Medica365');
+		$mail->setFrom('ventas@vag.mx', 'Vag');
 		$mail->addAddress($destino);						// Name is optional
 		
-		$mail->addAttachment($attach, 'Certificado Medica365', $encoding = 'base64', $type = 'application/pdf');	  // Add attachments
 		$mail->isHTML(true);                                // Set email format to HTML
 		
 		
 		
 		if(!$mail->send()) {
-			//echo 'Mailer Error: ' . $mail->ErrorInfo;
+			echo 'Mailer Error: ' . $mail->ErrorInfo;
 		} else {
 			//echo "enviado";
 		}
@@ -77,7 +80,7 @@ class Asociado {
 	function iniciarSesion($email, $contraseña) {
 		
 		if (!$this->dataBase->existeEmail($email)) {
-			throw new errorEmailNoExoste();
+			throw new errorEmailNoExiste();
 		}
 		if (!$this->dataBase->clavesCoinciden($email, $contraseña)){
 			throw new errorClavesNoCoinciden();
@@ -91,13 +94,53 @@ class Asociado {
 		return $this->dataBase->leerCuenta($token);
 	}
 	
-	function leerComisionActual($token) {
+	function leerComisionActual($id) {
+		date_default_timezone_set ( 'America/Mexico_City' );
+		$fecha = date ( "Y-m-d");
+		$ventaslvl0Lista = $this->ventaslvl0($id,'2017-01-01',$fecha);		
+		$comisionTotallvl0 = count($ventaslvl0Lista) * 50;
 		
+		
+		$numeroDeVentasNiveles = $this->ventasNiveles($id, '2017-01-01', $fecha);
+		$comisionTotalNiveles = $numeroDeVentasNiveles * 10;
+		
+		
+		$pagoDeComisionesTotales = $this->dataBase->pagoDeComisionesTotales($token)['cantidad'];
+		
+		//echo $comisionTotallvl0.'---'.$comisionTotalNiveles.'---'.$pagoDeComisionesTotales;
+		
+		return $comisionTotallvl0 + $comisionTotalNiveles - $pagoDeComisionesTotales;
+	}
+	
+	function ventaslvl0($id, $fechaInicio, $fechaFin)
+	{
+		$ventaslvl0 = $this->dataBase->ventasTotaleslvl0($id, $fechaInicio, $fechaFin);
+		for ($ventaslvl0Lista = array(); $fila = $ventaslvl0->fetch_assoc(); $ventaslvl0Lista[] = $fila);
+		return $ventaslvl0Lista;
+	}
+	
+	function ventasNiveles($id, $fechaInicio, $fechaFin)
+	{
+		$ventasNiveles = $this->dataBase->numeroVentasTotalesNiveles($id, $fechaInicio, $fechaFin);
+		return $ventasNiveles['numeroDeVentas'];
+	}
+	
+	function cambiarDatosCuenta($token, $email, $nombre)
+	{
+		$idAsociado = $this->leerCuenta($token)['id'];
+		$this->dataBase->cambiarDatosCuenta($idAsociado, $email, $nombre);
+	}
+	
+	function cambiarDatosContrasena($token, $contraseña, $contraseñaNueva)
+	{
+		$asociado = $this->leerCuenta($token);
+		if (!$this->dataBase->clavesCoinciden($asociado['email'], $contraseña)){
+			throw new errorClavesNoCoinciden();
+		}
+		$this->dataBase->cambiarDatosContrasena($asociado['id'], $contraseña, $contraseñaNueva);
 	}
 }
 
-class errorSendingMailException extends Exception{
-}
 class errorEmailUsado extends Exception{
 }
 class errorOrdenUsada extends Exception{

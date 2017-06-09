@@ -1,6 +1,6 @@
 (function ($){
   jQuery("document").ready(function(){
-	  var baseAPI = "http://vag.mx/api/dev/interfaz/";
+	  var baseAPI = "../api/interfaz/";
 	  var direccionCuenta = baseAPI + "cuenta/";
 	  var token = leerToken();
 	  var parametrosCuenta = {token: token};
@@ -8,20 +8,16 @@
 	  var leerCuentaRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	$('#cuenta-nombre').text(datos.info.nombre);
+	        	$('#cuenta-nombre').text(datos.info.nombre + ' (' + datos.info.id + ')');
 	        	$('#cuenta-email').html(datos.info.email);
 	        } else{
-	        	if(datos.clave == "email") {	
-	        		mostrarError("El email no existe");
-	        	} else {
-	        		mostrarError("Error al leer");
-	        	}
+	        	alert("Error leyendo la cuenta");
 	        }
 	  }
 	  
 	  var leerCuentaError = function (datos) {
 		  console.log(datos);
-		  mostrarError("Error con el servidor");
+		  alert("Error con el servidor al leer la cuenta");
 	  }
 	  
 	  $.post(direccionCuenta,parametrosCuenta, leerCuentaRespondio,"json").fail(leerCuentaError);
@@ -34,20 +30,15 @@
 	  var leerComisionRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	$('#cuenta-nombre').text(datos.info.nombre);
-	        	$('#cuenta-email').html(datos.info.email);
+	        	$('#cuenta-comisiones').html("$ " + datos.comision);
 	        } else{
-	        	if(datos.clave == "email") {	
-	        		mostrarError("El email no existe");
-	        	} else {
-	        		mostrarError("Error al leer");
-	        	}
+	        	alert("Error leyendo la comision");
 	        }
 	  }
 	  
 	  var leerComisionError = function (datos) {
 		  console.log(datos);
-		  mostrarError("Error con el servidor");
+		  alert("Error con el servidor al leer comision");
 	  }
 	  
 	  $.post(direccionComision,parametrosComision, leerComisionRespondio,"json").fail(leerComisionError);
@@ -80,14 +71,6 @@
 		    }
 		    return "";
 		}
-	  
-	  function mostrarExito(){
-		  
-	  }
-	  
-	  function mostrarError(error){
-		  
-	  }
 	  
   });
 })(jQuery);

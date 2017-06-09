@@ -17,12 +17,8 @@ if (!isset($_POST['token'])) {
 		echo json_encode(array("status"=>"ok","info"=>$informacion));
 		
 	} catch(errorConBaseDeDatos $e) {
-		echo json_encode(array("status"=>"error","clave"=>"db = ".$e->getMessage()));
-	} catch(errorEmailUsado $e) {
-		echo json_encode(array("status"=>"error","clave"=>"email =".$e->getMessage()));
-	} catch(errorOrdenUsada $e) {
-		echo json_encode(array("status"=>"error","clave"=>"orden = ".$e->getMessage()));
+		echo json_encode(array("status"=>"error","clave"=>"db","explicacion"=>$e->getMessage()));
 	} catch (Exception $e) {
-		echo json_encode(array("status"=>"error","clave"=>"desconocido = ".$e->getMessage()));
+		echo json_encode(array("status"=>"error","clave"=>"desconocido","explicacion"=>$e->getMessage()));
 	}
 ?>

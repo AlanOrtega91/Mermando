@@ -1,6 +1,6 @@
 (function ($){
   jQuery("document").ready(function(){
-	  var baseAPI = "http://vag.mx/api/dev/interfaz/";
+	  var baseAPI = "api/interfaz/";
 	  
 	  $('#forma').submit(function afiliarse(event){
 
@@ -19,26 +19,28 @@
 		  }
 		  
 		  var parametros = {nombre: nombre, email: email, contrasenia: contraseña, numeroOrden: numeroOrden};
-		  var direccion = baseAPI + "afiliarse/";
+		  var direccion = baseAPI + "asociarse/";
 		  $.post(direccion, parametros, afiliacionRespondio, "json").fail(afiliacionError);
 	  });
 	  
 	  var afiliacionRespondio = function (datos){
 		  console.log(datos);
 	        if(datos.status == "ok"){
-	        	$('#afiliarse').hide("slow");
-	        	$('#mensaje-exito').show("slow");
-	        	$('#mensaje-fracaso').hide();
+	        	mostrarExito()
 	        } else{
-	        	if(datos.clave == "") {
-	        		mostrarError('Error');
+	        	if(datos.clave == "email") {
+	        		mostrarError('El email esta siendo utilizado');
+	        	} else if (datos.clave == "orden"){
+	        		mostrarError("El numero de orden ya fue utilizado");
+	        	} else {
+	        		mostrarError("Error al asociarse. Revisa tus datos");
 	        	}
 	        }
 	  }
 	  
 	  var afiliacionError = function (datos) {
 		  console.log(datos);
-		  mostrarError("Error");
+		  mostrarError("Error con servidor intentalo mas tarde");
 	  }
 	  
 	  function mostrarExito(){
@@ -52,7 +54,7 @@
 		  $('#mensaje-exito').hide();
 		  $('#mensaje-error').show("slow");
 		  $('#mensaje-error-texto').html(error);
-		  $('#forma-boton').prop('value', 'Enviar');
+		  $('#forma-boton').prop('value', 'Asociarse');
 	  }
 	  
   });

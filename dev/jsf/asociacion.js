@@ -1,6 +1,6 @@
 (function ($){
   jQuery("document").ready(function(){
-	  var baseAPI = "http://vag.mx/dev/api/interfaz/";
+	  var baseAPI = "api/interfaz/";
 	  
 	  $('#forma').submit(function afiliarse(event){
 

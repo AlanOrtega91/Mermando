@@ -21,11 +21,11 @@ if (!isset($_POST['nombre']) || !isset($_POST['email']) || !isset($_POST['contra
 		echo json_encode(array("status"=>"ok"));
 		
 	} catch(errorConBaseDeDatos $e) {
-		echo json_encode(array("status"=>"error","clave"=>"db = ".$e->getMessage()));
+		echo json_encode(array("status"=>"error","clave"=>"db","explicacion"=>$e->getMessage()));
 	} catch(errorEmailUsado $e) {
-		echo json_encode(array("status"=>"error","clave"=>"email =".$e->getMessage()));
+		echo json_encode(array("status"=>"error","clave"=>"email","explicacion"=>"El email ya esta siendo usado"));
 	} catch(errorOrdenUsada $e) {
-		echo json_encode(array("status"=>"error","clave"=>"orden = ".$e->getMessage()));
+		echo json_encode(array("status"=>"error","clave"=>"orden","explicacion"=>"El numero de orden no es valido o ya fue utilizado"));
 	} catch (Exception $e) {
 		echo json_encode(array("status"=>"error","clave"=>"desconocido = ".$e->getMessage()));
  	}

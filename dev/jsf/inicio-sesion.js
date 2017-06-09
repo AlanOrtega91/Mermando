@@ -1,6 +1,6 @@
 (function ($){
   jQuery("document").ready(function(){
-	  var baseAPI = "http://vag.mx/dev/api/interfaz/";
+	  var baseAPI = "api/interfaz/";
 	  
 	  $('#forma').submit(function afiliarse(event){
 
@@ -19,9 +19,11 @@
 		  console.log(datos);
 	        if(datos.status == "ok"){
 	        	guardarToken(datos.token);
-	        	window.location.replace("http://vag.mx/dev/cuenta/cuenta.html");
+	        	window.location.replace("cuenta/cuenta.html");
 	        } else{
 	        	if(datos.clave == "email") {	
+	        		mostrarError("El email o la contraseña son incorrectos");
+	        	} else if (datos.clave == "claves"){
 	        		mostrarError("El email o la contraseña son incorrectos");
 	        	} else {
 	        		mostrarError("Error con el servidor. Intentalo mas tarde");

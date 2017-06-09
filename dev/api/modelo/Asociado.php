@@ -94,15 +94,14 @@ class Asociado {
 		return $this->dataBase->leerCuenta($token);
 	}
 	
-	function leerComisionActual($token) {
+	function leerComisionActual($id) {
 		date_default_timezone_set ( 'America/Mexico_City' );
 		$fecha = date ( "Y-m-d");
-		$asociado = $this->leerCuenta($token);
-		$ventaslvl0Lista = $this->ventaslvl0($asociado['id'],'2017-01-01',$fecha);		
+		$ventaslvl0Lista = $this->ventaslvl0($id,'2017-01-01',$fecha);		
 		$comisionTotallvl0 = count($ventaslvl0Lista) * 50;
 		
 		
-		$numeroDeVentasNiveles = $this->ventasNiveles($asociado['id'], '2017-01-01', $fecha);
+		$numeroDeVentasNiveles = $this->ventasNiveles($id, '2017-01-01', $fecha);
 		$comisionTotalNiveles = $numeroDeVentasNiveles * 10;
 		
 		

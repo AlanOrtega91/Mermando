@@ -628,6 +628,8 @@ p {
 }
 
 .form-button {
+  margin-top: 5px;
+  margin-bottom: 15px;
   border-radius: 5px;
   background-color: #4dbd90;
 }
@@ -786,6 +788,48 @@ p {
 .centro-interno {
   display: block;
   text-align: center;
+}
+
+.list-item {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 5px;
+  float: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border: 1px solid #4dbd90;
+  border-radius: 4px;
+}
+
+.column {
+  height: 100%;
+}
+
+.boton-asegurados {
+  margin-right: 15px;
+  margin-left: 15px;
+  border-radius: 7px;
+  background-color: #4dbd90;
+}
+
+.div-block {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 25px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 html.w-mod-js *[data-ix="fade-in-on-load"] {

@@ -1,6 +1,6 @@
 (function ($){
   jQuery("document").ready(function(){
-	  var baseAPI = "http://vag.mx/dev/api/interfaz/";
+	  var baseAPI = "../api/interfaz/";
 	  var direccionCuenta = baseAPI + "cuenta/";
 	  var token = leerToken();
 	  var parametrosCuenta = {token: token};
@@ -11,13 +11,13 @@
 	        	$('#cuenta-nombre').text(datos.info.nombre + ' (' + datos.info.id + ')');
 	        	$('#cuenta-email').html(datos.info.email);
 	        } else{
-
+	        	alert("Error leyendo la cuenta");
 	        }
 	  }
 	  
 	  var leerCuentaError = function (datos) {
 		  console.log(datos);
-		  mostrarError("Error con el servidor");
+		  alert("Error con el servidor al leer la cuenta");
 	  }
 	  
 	  $.post(direccionCuenta,parametrosCuenta, leerCuentaRespondio,"json").fail(leerCuentaError);
@@ -32,13 +32,13 @@
 	        if(datos.status == "ok"){
 	        	$('#cuenta-comisiones').html("$ " + datos.comision);
 	        } else{
-
+	        	alert("Error leyendo la comision");
 	        }
 	  }
 	  
 	  var leerComisionError = function (datos) {
 		  console.log(datos);
-		  mostrarError("Error con el servidor");
+		  alert("Error con el servidor al leer comision");
 	  }
 	  
 	  $.post(direccionComision,parametrosComision, leerComisionRespondio,"json").fail(leerComisionError);
