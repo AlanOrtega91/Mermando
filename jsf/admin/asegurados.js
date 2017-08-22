@@ -6,7 +6,7 @@
 	  var aseguradosActivosPorAgregar = [];
 	  var aseguradosVencidos = [];
 	  var aseguradosVencidosPorDarDeBaja = [];
-	  
+	  $('#boton-asegurados').hide();
 	  
 	  var direccionAsegurados = baseAPI + "leer-asegurados/";
 	  var parametrosAsegurados = {token: token};
@@ -112,7 +112,8 @@
 		  listaHTML += "</table>";
 		  $('#tabla-asegurados').html(listaHTML);
 		  $('#boton-asegurados').show();
-		  $('#boton-asegurados').prop('value', 'Agregar');
+		  $('#boton-asegurados').html('Agregar');
+		  $('#boton-asegurados').val("agregar");
 	  });
 	  
 	  $('#vencidosBaja').click(function(){
@@ -142,7 +143,8 @@
 		  listaHTML += "</table>";
 		  $('#tabla-asegurados').html(listaHTML);
 		  $('#boton-asegurados').show();
-		  $('#boton-asegurados').prop('value', 'Dar de Baja');
+		  $('#boton-asegurados').html('Dar de Baja');
+		  $('#boton-asegurados').val("baja");
 	  });
 	  
 	  $('#vencidos').click(function(){

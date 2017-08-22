@@ -25,6 +25,16 @@ class AdministradorDB extends BaseDeDatos {
 			FROM BeneficiarioMedica365
 			WHERE agregadoApoliza = 0 AND Vigencia < NOW()";
  	
+ 	const AGREGAR_ASEGURADOS = "UPDATE BeneficiarioMedica365
+			SET agregadoAPoliza = 1
+			WHERE vigencia > NOW()
+			AND certificado IN (%s)";
+ 	
+ 	const BAJA_ASEGURADOS= "UPDATE BeneficiarioMedica365
+			SET agregadoAPoliza = 0
+			WHERE vigencia < NOW()
+			AND certificado IN (%s)";
+ 	
  	function existeEmail($email){
  		$query = sprintf(self::BUSCAR_EMAIL, $email);
  		$resultado = $this->ejecutarQuery($query);
@@ -83,6 +93,18 @@ class AdministradorDB extends BaseDeDatos {
  		$query = sprintf(self::LEER_ASEGURADOS_VENCIDOS_POR_BAJA);
  		$resultado = $this->ejecutarQuery($query);
  		return $resultado;
+ 	}
+ 	
+ 	function agregarAsegurados($certificados)
+ 	{
+ 		$query = sprintf(self::AGREGAR_ASEGURADOS, $certificados);
+ 		$this->ejecutarQuery($query);
+ 	}
+ 	
+ 	function bajaAsegurados($certificados)
+ 	{
+ 		$query = sprintf(self::BAJA_ASEGURADOS, $certificados);
+ 		$this->ejecutarQuery($query);
  	}
 }
 ?>

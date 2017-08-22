@@ -72,6 +72,14 @@ class Administrador {
 		for ($aseguradosLista= array(); $fila = $asegurados->fetch_assoc(); $aseguradosLista[] = $fila);
 		return $aseguradosLista;
 	}
+	function agregarAsegurados($certificados)
+	{
+		$this->dataBase->agregarAsegurados($certificados);
+	}
 	
+	function bajaAsegurados($certificados)
+	{
+		$this->dataBase->bajaAsegurados($certificados);
+	}
 }
 ?>

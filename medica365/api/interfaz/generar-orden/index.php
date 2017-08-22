@@ -32,12 +32,36 @@ if (!isset($_POST['nombre']) || !isset($_POST['ocupacion'])
 		echo json_encode(array("status"=>"error","clave"=>"db","explicacion"=>$e->getMessage()));
 	} catch(errorMakingPaymentException $e) {
 		echo json_encode(array("status"=>"error","clave"=>"pago","explicacion"=>$e->getMessage()));
-	} catch(Conekta\ErrorList $e) {
-		$error = "";
-		foreach($e->details as &$errorDetail) {
-			$error = $error. "-".$errorDetail->getMessage();
+	} catch(Conekta\Handler $error) {
+		//Aqui es donde muestra el error de que no se pudo conectar a la api
+		var_dump($error);
+		echo('Mensaje ='.$error->getMessage().' -------');
+		echo('Code ='.$error->getCode().' -------');
+		echo('Line ='.$error->getLine().' -------');
+		echo('Trace ='.$error->getTraceAsString().' -------');
+		
+
+		//Conekta object
+		echo "Mensaje dump = ";
+		var_dump($error->getConektaMessage());
+		echo " ----------";
+		//Conekta object props
+		$conektaError = $error->getConektaMessage();
+		echo "Type dump = ";
+		var_dump($conektaError->type);
+		echo " ----------";
+		echo "Detail dump = ";
+		var_dump($conektaError->details);
+		echo " ----------";
+
+		//Object iteration
+		$conektaError = $error->getConektaMessage();
+		foreach ($conektaError->details as $key) {
+			echo "Iteracion = ";
+			echo($key->debug_message);
+			echo " ----------";
 		}
-		echo json_encode(array("status"=>"error","clave"=>"datos","explicacion"=>$e->getMessage()));
+		echo json_encode(array("status"=>"error","clave"=>"datos","explicacion"=>$error->getMessage().'---'.var_dump($error->getConektaMessage())));
 	} catch (Exception $e) {
 		echo json_encode(array("status"=>"error","clave"=>"desconocido","explicacion"=>$e->getMessage()));
 	}

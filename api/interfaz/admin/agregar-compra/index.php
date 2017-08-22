@@ -1,18 +1,17 @@
 <?php
-$pathAPI = dirname(__FILE__)."/../../../../api/";
+$pathAPI = dirname(__FILE__)."/../../../";
 require_once $pathAPI. "modelo/SafeString.php";
 require_once $pathAPI. "modelo/Producto.php";
 
 header('Content-Type: text/html; charset=utf8');
 
-if (!isset($_POST['token']) || !isset($_POST['nombre']) || !isset($_POST['ocupacion']) 
+if (!isset($_POST['nombre']) || !isset($_POST['ocupacion']) 
 		|| !isset($_POST['telefono']) || !isset($_POST['celular']) || !isset($_POST['email']) 
-		|| !isset($_POST['rfc']) || !isset($_POST['beneficiario'])) {
+		|| !isset($_POST['rfc']) || !isset($_POST['beneficiario']) || !isset($_POST['referencia'])) {
 			die(json_encode(array("Status"=>"ERROR missing values")));
 		}
 		
 	try{
-		$token = SafeString::safe($_POST['token']);
 		$nombre = SafeString::safe($_POST['nombre']);
 		$ocupacion = SafeString::safe($_POST['ocupacion']);
 		$telefono = SafeString::safe($_POST['telefono']);
@@ -20,14 +19,17 @@ if (!isset($_POST['token']) || !isset($_POST['nombre']) || !isset($_POST['ocupac
 		$email = SafeString::safe($_POST['email']);
 		$rfc = SafeString::safe($_POST['rfc']);
 		$beneficiario = SafeString::safe($_POST['beneficiario']);
+		$referencia = $_POST['referencia'];
+		if ($nombre == "" || $ocupacion == "" || $telefono == "" || $celular == "" || $email == "" || $rfc == "" || $beneficiario == "" || $referencia == "") {
+			die(json_encode(array("Status"=>"ERROR missing values")));
+		}
 		$asociado = null;
 		if (isset($_POST['asociado'])) {
 			$asociado = SafeString::safe($_POST['asociado']);
 		}
-		$tipo = $_POST['tipo'];
 		
 		$producto = new Producto();
-		$producto->comprarMedica365($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado);
+		$producto->agregarCompraMedica365($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $referencia);
 
 		echo json_encode(array("status"=>"ok"));
 		

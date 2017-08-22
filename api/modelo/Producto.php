@@ -18,14 +18,30 @@ class Producto {
 	const MEDICA365_NOMBRE = 'Tarjeta Medica365';
 	
 
-	public function comprarMedica365($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado) {
+	function comprarMedica365($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado) {
 		date_default_timezone_set ( 'America/Mexico_City' );
 		$vigencia = date ( "Y-m-d", strtotime('+1 year') );
-		$destino = $email;
 		
 		
 		$idTransaccion = $this->realizarPago($token, $nombre, $celular, $email);
 
+		$certificado = $this->guardarDatos($nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idTransaccion, $vigencia);
+		
+		$nombreCurado = iconv('UTF-8','windows-1252',$nombre);
+		$pdf = $this->construirPDFMedica($certificado, $nombreCurado, $vigencia);
+		
+		$this->generarEmailUsuarioBienvenidaMedica365($nombreCurado, $certificado, $idTransaccion, $email, $pdf);
+		$this->generarEmailAdminVenta(self::MEDICA365_NOMBRE, self::MEDICA365_PRECIO.".00",$idTransaccion, self::POLIZA, 'Poliza', $certificado, 'Certificado', $pdf);
+	}
+	
+	function agregarCompraMedica365($token, $nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $referencia)
+	{
+		date_default_timezone_set ( 'America/Mexico_City' );
+		$vigencia = date ( "Y-m-d", strtotime('+1 year') );
+		
+		
+		$idTransaccion = $referencia;
+		
 		$certificado = $this->guardarDatos($nombre, $ocupacion, $telefono, $celular, $email, $rfc, $beneficiario, $asociado, $idTransaccion, $vigencia);
 		
 		$nombreCurado = iconv('UTF-8','windows-1252',$nombre);
@@ -85,7 +101,7 @@ class Producto {
 		$nombreCurado = iconv('UTF-8','windows-1252', $nombre);
 		
 		$mensaje = OrdenOxxo::generarReciboHTML($orden->charges[0]->payment_method->reference, $orden->amount/100, $orden->currency);
-		$this->enviarEmail($asunto, $mensaje, $destino, $pdf);
+		$this->enviarEmail($asunto, $mensaje, $email, $pdf);
 		return array("referencia"=>$orden->charges[0]->payment_method->reference,"precio"=> $orden->amount/100,"moneda"=> $orden->currency);
 	}
 	
